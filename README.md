@@ -2,6 +2,11 @@
 
 **VFE Corel Production Tools 27** is a VBA/GMS production toolkit for **CorelDRAW version 27 on Windows**.
 
+<p align="center">
+  <img src="images/vfe_main_menu.png" width="45%" />
+  <img src="images/vfe_workflow.png" width="45%" />
+</p>
+
 Copyright (c) 2026 VFE Flavius. All rights reserved.
 
 > This is source-visible proprietary software. It is not open source. Installation and use are allowed under the included licence; modification, redistribution, repackaging, and resale require prior written permission from VFE Flavius.
