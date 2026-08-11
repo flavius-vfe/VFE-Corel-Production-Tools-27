@@ -1,8 +1,8 @@
 Attribute VB_Name = "VFE_UI_Installer"
 Option Explicit
 
-' SPDX-License-Identifier: LicenseRef-VFE-Proprietary-1.1
-' Licensed under the VFE Proprietary Software License v1.1.
+' SPDX-License-Identifier: LicenseRef-VFE-Proprietary-1.0
+' Licensed under the VFE Proprietary Software License v1.0.
 ' See LICENSE.md in the distribution package.
 
 ' VFE Corel Production Tools 27 v0.4.0 - Visual Interface Installer
@@ -12,6 +12,10 @@ Option Explicit
 ' Run VFE_InstallVisualInterface after importing this module and
 ' VFE_CorelProductionTools27.bas into the target GMS project.
 
+' Backward-compatible installer entry point.
+Public Sub CPT27_InstallVisualInterface()
+    VFE_InstallVisualInterface
+End Sub
 
 Public Sub VFE_InstallVisualInterface()
     Dim vbProj As Object
@@ -50,22 +54,22 @@ Private Sub CPT27_CreateLauncher(ByVal vbProj As Object)
     CPT27_RemoveComponent vbProj, "frmVFELauncher"
     Set comp = vbProj.VBComponents.Add(3)
     comp.Name = "frmVFELauncher"
-    Set designer = comp.Designer
+    Set designer = comp.designer
 
     CPT27_SetComponentProperty comp, "Caption", "VFE Corel Production Tools 27"
-    CPT27_SetComponentProperty comp, "Width", 390.00
-    CPT27_SetComponentProperty comp, "Height", 315.00
+    CPT27_SetComponentProperty comp, "Width", 390#
+    CPT27_SetComponentProperty comp, "Height", 315#
     CPT27_SetComponentProperty comp, "StartUpPosition", 1
 
-    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblTitle", "VFE COREL PRODUCTION TOOLS 27", 18.00, 12.00, 342.00, 18.00)
-    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblInfo", "Prepare dimensions, convert source text when required, or run a saved/custom export workflow.", 18.00, 33.00, 342.00, 27.00)
+    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblTitle", "VFE COREL PRODUCTION TOOLS 27", 18#, 12#, 342#, 18#)
+    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblInfo", "Prepare dimensions, convert source text when required, or run a saved/custom export workflow.", 18#, 33#, 342#, 27#)
     CPT27_SetControlProperty ctl, "WordWrap", True
-    Set ctl = CPT27_AddControl(designer, "Forms.CommandButton.1", "cmdDimensions", "1.  Dimension Tool", 42.00, 69.00, 288.00, 33.00)
-    Set ctl = CPT27_AddControl(designer, "Forms.CommandButton.1", "cmdExport", "2.  Export Workflow", 42.00, 108.00, 288.00, 33.00)
-    Set ctl = CPT27_AddControl(designer, "Forms.CommandButton.1", "cmdCurvesCurrent", "3.  Convert Text to Curves - Current Page", 42.00, 147.00, 288.00, 33.00)
-    Set ctl = CPT27_AddControl(designer, "Forms.CommandButton.1", "cmdCurvesAll", "4.  Convert Text to Curves - All Pages", 42.00, 186.00, 288.00, 33.00)
-    Set ctl = CPT27_AddControl(designer, "Forms.CommandButton.1", "cmdClose", "Close", 282.00, 231.00, 48.00, 21.00)
-    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblCopyright", "Copyright (c) 2026 VFE Flavius. All rights reserved.", 18.00, 267.00, 342.00, 13.50)
+    Set ctl = CPT27_AddControl(designer, "Forms.CommandButton.1", "cmdDimensions", "1.  Dimension Tool", 42#, 69#, 288#, 33#)
+    Set ctl = CPT27_AddControl(designer, "Forms.CommandButton.1", "cmdExport", "2.  Export Workflow", 42#, 108#, 288#, 33#)
+    Set ctl = CPT27_AddControl(designer, "Forms.CommandButton.1", "cmdCurvesCurrent", "3.  Convert Text to Curves - Current Page", 42#, 147#, 288#, 33#)
+    Set ctl = CPT27_AddControl(designer, "Forms.CommandButton.1", "cmdCurvesAll", "4.  Convert Text to Curves - All Pages", 42#, 186#, 288#, 33#)
+    Set ctl = CPT27_AddControl(designer, "Forms.CommandButton.1", "cmdClose", "Close", 282#, 231#, 48#, 21#)
+    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblCopyright", "Copyright (c) 2026 VFE Flavius. All rights reserved.", 18#, 267#, 342#, 13.5)
     CPT27_SetControlProperty ctl, "TextAlign", 2
 
     CPT27_SetCode comp, CPT27_frmVFELauncher_Code()
@@ -80,45 +84,45 @@ Private Sub CPT27_CreateDimensionForm(ByVal vbProj As Object)
     CPT27_RemoveComponent vbProj, "frmVFEDimensionTool"
     Set comp = vbProj.VBComponents.Add(3)
     comp.Name = "frmVFEDimensionTool"
-    Set designer = comp.Designer
+    Set designer = comp.designer
 
     CPT27_SetComponentProperty comp, "Caption", "VFE Corel Production Tools 27 - Dimension Tool"
-    CPT27_SetComponentProperty comp, "Width", 462.00
-    CPT27_SetComponentProperty comp, "Height", 399.00
+    CPT27_SetComponentProperty comp, "Width", 462#
+    CPT27_SetComponentProperty comp, "Height", 399#
     CPT27_SetComponentProperty comp, "StartUpPosition", 1
 
-    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblHeader", "DIMENSION TOOL", 15.00, 9.00, 414.00, 16.50)
-    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblInstructions", "Select objects in CorelDRAW, choose how they should be measured, then add editable dimensions to the DIMENSIONS layer.", 15.00, 27.00, 414.00, 25.50)
+    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblHeader", "DIMENSION TOOL", 15#, 9#, 414#, 16.5)
+    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblInstructions", "Select objects in CorelDRAW, choose how they should be measured, then add editable dimensions to the DIMENSIONS layer.", 15#, 27#, 414#, 25.5)
     CPT27_SetControlProperty ctl, "WordWrap", True
-    Set ctl = CPT27_AddControl(designer, "Forms.Frame.1", "fraTarget", "Measure", 15.00, 57.00, 201.00, 63.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraTarget"), "Forms.OptionButton.1", "optEachObject", "Every selected object separately", 12.00, 18.00, 171.00, 15.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraTarget"), "Forms.OptionButton.1", "optCompleteSelection", "Entire selection as one object", 12.00, 39.00, 171.00, 15.00)
-    Set ctl = CPT27_AddControl(designer, "Forms.Frame.1", "fraAxes", "Create", 225.00, 57.00, 204.00, 63.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraAxes"), "Forms.CheckBox.1", "chkWidth", "Width dimension", 12.00, 18.00, 165.00, 15.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraAxes"), "Forms.CheckBox.1", "chkHeight", "Height dimension", 12.00, 39.00, 165.00, 15.00)
-    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblUnit", "Display unit", 21.00, 138.00, 75.00, 13.50)
-    Set ctl = CPT27_AddControl(designer, "Forms.ComboBox.1", "cboUnit", "", 99.00, 135.00, 66.00, 16.50)
+    Set ctl = CPT27_AddControl(designer, "Forms.Frame.1", "fraTarget", "Measure", 15#, 57#, 201#, 63#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraTarget"), "Forms.OptionButton.1", "optEachObject", "Every selected object separately", 12#, 18#, 171#, 15#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraTarget"), "Forms.OptionButton.1", "optCompleteSelection", "Entire selection as one object", 12#, 39#, 171#, 15#)
+    Set ctl = CPT27_AddControl(designer, "Forms.Frame.1", "fraAxes", "Create", 225#, 57#, 204#, 63#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraAxes"), "Forms.CheckBox.1", "chkWidth", "Width dimension", 12#, 18#, 165#, 15#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraAxes"), "Forms.CheckBox.1", "chkHeight", "Height dimension", 12#, 39#, 165#, 15#)
+    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblUnit", "Display unit", 21#, 138#, 75#, 13.5)
+    Set ctl = CPT27_AddControl(designer, "Forms.ComboBox.1", "cboUnit", "", 99#, 135#, 66#, 16.5)
     CPT27_SetControlProperty ctl, "Style", 2
-    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblDecimals", "Decimals", 21.00, 162.00, 75.00, 13.50)
-    Set ctl = CPT27_AddControl(designer, "Forms.ComboBox.1", "cboDecimals", "", 99.00, 159.00, 66.00, 16.50)
+    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblDecimals", "Decimals", 21#, 162#, 75#, 13.5)
+    Set ctl = CPT27_AddControl(designer, "Forms.ComboBox.1", "cboDecimals", "", 99#, 159#, 66#, 16.5)
     CPT27_SetControlProperty ctl, "Style", 2
-    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblFont", "Font name", 21.00, 186.00, 75.00, 13.50)
-    Set ctl = CPT27_AddControl(designer, "Forms.TextBox.1", "txtFont", "", 99.00, 183.00, 117.00, 16.50)
-    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblFontSize", "Font size (pt)", 234.00, 138.00, 87.00, 13.50)
-    Set ctl = CPT27_AddControl(designer, "Forms.TextBox.1", "txtFontSize", "", 324.00, 135.00, 66.00, 16.50)
-    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblSpacing", "Line distance (mm)", 234.00, 162.00, 87.00, 13.50)
-    Set ctl = CPT27_AddControl(designer, "Forms.TextBox.1", "txtSpacing", "", 324.00, 159.00, 66.00, 16.50)
-    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblColor", "Colour", 234.00, 186.00, 87.00, 13.50)
-    Set ctl = CPT27_AddControl(designer, "Forms.ComboBox.1", "cboColor", "", 324.00, 183.00, 66.00, 16.50)
+    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblFont", "Font name", 21#, 186#, 75#, 13.5)
+    Set ctl = CPT27_AddControl(designer, "Forms.TextBox.1", "txtFont", "", 99#, 183#, 117#, 16.5)
+    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblFontSize", "Font size (pt)", 234#, 138#, 87#, 13.5)
+    Set ctl = CPT27_AddControl(designer, "Forms.TextBox.1", "txtFontSize", "", 324#, 135#, 66#, 16.5)
+    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblSpacing", "Line distance (mm)", 234#, 162#, 87#, 13.5)
+    Set ctl = CPT27_AddControl(designer, "Forms.TextBox.1", "txtSpacing", "", 324#, 159#, 66#, 16.5)
+    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblColor", "Colour", 234#, 186#, 87#, 13.5)
+    Set ctl = CPT27_AddControl(designer, "Forms.ComboBox.1", "cboColor", "", 324#, 183#, 66#, 16.5)
     CPT27_SetControlProperty ctl, "Style", 2
-    Set ctl = CPT27_AddControl(designer, "Forms.CheckBox.1", "chkRemoveOld", "Remove existing objects from the DIMENSIONS layer first", 21.00, 216.00, 300.00, 16.50)
-    Set ctl = CPT27_AddControl(designer, "Forms.CheckBox.1", "chkGroupCreated", "Group the newly created dimension objects", 21.00, 237.00, 300.00, 16.50)
-    Set ctl = CPT27_AddControl(designer, "Forms.Frame.1", "fraSelection", "Current selection", 15.00, 261.00, 414.00, 45.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraSelection"), "Forms.Label.1", "lblSelection", "No objects selected", 12.00, 18.00, 297.00, 15.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraSelection"), "Forms.CommandButton.1", "cmdRefresh", "Refresh", 324.00, 15.00, 66.00, 18.00)
-    Set ctl = CPT27_AddControl(designer, "Forms.CommandButton.1", "cmdAdd", "Add Dimensions", 258.00, 312.00, 102.00, 24.00)
-    Set ctl = CPT27_AddControl(designer, "Forms.CommandButton.1", "cmdClose", "Close", 369.00, 312.00, 60.00, 24.00)
-    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblCopyright", "Copyright (c) 2026 VFE Flavius. All rights reserved.", 15.00, 348.00, 414.00, 13.50)
+    Set ctl = CPT27_AddControl(designer, "Forms.CheckBox.1", "chkRemoveOld", "Remove existing objects from the DIMENSIONS layer first", 21#, 216#, 300#, 16.5)
+    Set ctl = CPT27_AddControl(designer, "Forms.CheckBox.1", "chkGroupCreated", "Group the newly created dimension objects", 21#, 237#, 300#, 16.5)
+    Set ctl = CPT27_AddControl(designer, "Forms.Frame.1", "fraSelection", "Current selection", 15#, 261#, 414#, 45#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraSelection"), "Forms.Label.1", "lblSelection", "No objects selected", 12#, 18#, 297#, 15#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraSelection"), "Forms.CommandButton.1", "cmdRefresh", "Refresh", 324#, 15#, 66#, 18#)
+    Set ctl = CPT27_AddControl(designer, "Forms.CommandButton.1", "cmdAdd", "Add Dimensions", 258#, 312#, 102#, 24#)
+    Set ctl = CPT27_AddControl(designer, "Forms.CommandButton.1", "cmdClose", "Close", 369#, 312#, 60#, 24#)
+    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblCopyright", "Copyright (c) 2026 VFE Flavius. All rights reserved.", 15#, 348#, 414#, 13.5)
     CPT27_SetControlProperty ctl, "TextAlign", 2
 
     CPT27_SetCode comp, CPT27_frmVFEDimensionTool_Code()
@@ -133,94 +137,94 @@ Private Sub CPT27_CreateExportForm(ByVal vbProj As Object)
     CPT27_RemoveComponent vbProj, "frmVFEExportWorkflow"
     Set comp = vbProj.VBComponents.Add(3)
     comp.Name = "frmVFEExportWorkflow"
-    Set designer = comp.Designer
+    Set designer = comp.designer
 
     CPT27_SetComponentProperty comp, "Caption", "VFE Corel Production Tools 27 - Export Workflow"
-    CPT27_SetComponentProperty comp, "Width", 672.00
-    CPT27_SetComponentProperty comp, "Height", 555.00
+    CPT27_SetComponentProperty comp, "Width", 672#
+    CPT27_SetComponentProperty comp, "Height", 555#
     CPT27_SetComponentProperty comp, "StartUpPosition", 1
 
-    Set ctl = CPT27_AddControl(designer, "Forms.Frame.1", "fraProfile", "Workflow profile", 12.00, 9.00, 636.00, 45.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraProfile"), "Forms.ComboBox.1", "cboProfile", "", 9.00, 16.50, 234.00, 16.50)
+    Set ctl = CPT27_AddControl(designer, "Forms.Frame.1", "fraProfile", "Workflow profile", 12#, 9#, 636#, 45#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraProfile"), "Forms.ComboBox.1", "cboProfile", "", 9#, 16.5, 234#, 16.5)
     CPT27_SetControlProperty ctl, "Style", 2
-    Set ctl = CPT27_AddControl(designer.Controls("fraProfile"), "Forms.CommandButton.1", "cmdNewProfile", "New", 255.00, 15.00, 51.00, 18.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraProfile"), "Forms.CommandButton.1", "cmdSaveProfile", "Save As", 312.00, 15.00, 60.00, 18.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraProfile"), "Forms.CommandButton.1", "cmdDeleteProfile", "Delete", 378.00, 15.00, 51.00, 18.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraProfile"), "Forms.Label.1", "lblProfileHelp", "Profiles contain export settings only. Dimensions are prepared separately.", 441.00, 15.00, 174.00, 18.00)
+    Set ctl = CPT27_AddControl(designer.Controls("fraProfile"), "Forms.CommandButton.1", "cmdNewProfile", "New", 255#, 15#, 51#, 18#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraProfile"), "Forms.CommandButton.1", "cmdSaveProfile", "Save As", 312#, 15#, 60#, 18#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraProfile"), "Forms.CommandButton.1", "cmdDeleteProfile", "Delete", 378#, 15#, 51#, 18#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraProfile"), "Forms.Label.1", "lblProfileHelp", "Profiles contain export settings only. Dimensions are prepared separately.", 441#, 15#, 174#, 18#)
     CPT27_SetControlProperty ctl, "WordWrap", True
 
-    Set ctl = CPT27_AddControl(designer, "Forms.Frame.1", "fraScopeName", "Job and naming", 12.00, 60.00, 204.00, 105.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraScopeName"), "Forms.Label.1", "lblScope", "Process", 9.00, 18.00, 57.00, 13.50)
-    Set ctl = CPT27_AddControl(designer.Controls("fraScopeName"), "Forms.ComboBox.1", "cboScope", "", 69.00, 15.00, 120.00, 16.50)
+    Set ctl = CPT27_AddControl(designer, "Forms.Frame.1", "fraScopeName", "Job and naming", 12#, 60#, 204#, 105#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraScopeName"), "Forms.Label.1", "lblScope", "Process", 9#, 18#, 57#, 13.5)
+    Set ctl = CPT27_AddControl(designer.Controls("fraScopeName"), "Forms.ComboBox.1", "cboScope", "", 69#, 15#, 120#, 16.5)
     CPT27_SetControlProperty ctl, "Style", 2
-    Set ctl = CPT27_AddControl(designer.Controls("fraScopeName"), "Forms.Label.1", "lblNameMode", "Filename source", 9.00, 42.00, 66.00, 13.50)
-    Set ctl = CPT27_AddControl(designer.Controls("fraScopeName"), "Forms.ComboBox.1", "cboNameMode", "", 78.00, 39.00, 111.00, 16.50)
+    Set ctl = CPT27_AddControl(designer.Controls("fraScopeName"), "Forms.Label.1", "lblNameMode", "Filename source", 9#, 42#, 66#, 13.5)
+    Set ctl = CPT27_AddControl(designer.Controls("fraScopeName"), "Forms.ComboBox.1", "cboNameMode", "", 78#, 39#, 111#, 16.5)
     CPT27_SetControlProperty ctl, "Style", 2
-    Set ctl = CPT27_AddControl(designer.Controls("fraScopeName"), "Forms.Label.1", "lblCustomName", "Custom prefix", 9.00, 66.00, 66.00, 13.50)
-    Set ctl = CPT27_AddControl(designer.Controls("fraScopeName"), "Forms.TextBox.1", "txtCustomName", "", 78.00, 63.00, 111.00, 16.50)
-    Set ctl = CPT27_AddControl(designer.Controls("fraScopeName"), "Forms.CheckBox.1", "chkRenamePages", "Rename source pages from resolved names", 9.00, 84.00, 177.00, 16.50)
+    Set ctl = CPT27_AddControl(designer.Controls("fraScopeName"), "Forms.Label.1", "lblCustomName", "Custom prefix", 9#, 66#, 66#, 13.5)
+    Set ctl = CPT27_AddControl(designer.Controls("fraScopeName"), "Forms.TextBox.1", "txtCustomName", "", 78#, 63#, 111#, 16.5)
+    Set ctl = CPT27_AddControl(designer.Controls("fraScopeName"), "Forms.CheckBox.1", "chkRenamePages", "Rename source pages from resolved names", 9#, 84#, 177#, 16.5)
 
-    Set ctl = CPT27_AddControl(designer, "Forms.Frame.1", "fraFormats", "Output formats", 225.00, 60.00, 195.00, 105.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraFormats"), "Forms.CheckBox.1", "chkCurrentCDR", "Current-version CDR", 9.00, 15.00, 168.00, 15.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraFormats"), "Forms.CheckBox.1", "chkV15CDR", "Version 15 CDR", 9.00, 33.00, 168.00, 15.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraFormats"), "Forms.CheckBox.1", "chkCurvesCDR", "Curved current-version CDR", 9.00, 51.00, 168.00, 15.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraFormats"), "Forms.CheckBox.1", "chkCurvesV15", "Curved version 15 CDR", 9.00, 69.00, 168.00, 15.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraFormats"), "Forms.CheckBox.1", "chkPDF", "Curved PDF", 9.00, 87.00, 168.00, 15.00)
+    Set ctl = CPT27_AddControl(designer, "Forms.Frame.1", "fraFormats", "Output formats", 225#, 60#, 195#, 105#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraFormats"), "Forms.CheckBox.1", "chkCurrentCDR", "Current-version CDR", 9#, 15#, 168#, 15#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraFormats"), "Forms.CheckBox.1", "chkV15CDR", "Version 15 CDR", 9#, 33#, 168#, 15#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraFormats"), "Forms.CheckBox.1", "chkCurvesCDR", "Curved current-version CDR", 9#, 51#, 168#, 15#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraFormats"), "Forms.CheckBox.1", "chkCurvesV15", "Curved version 15 CDR", 9#, 69#, 168#, 15#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraFormats"), "Forms.CheckBox.1", "chkPDF", "Curved PDF", 9#, 87#, 168#, 15#)
 
-    Set ctl = CPT27_AddControl(designer, "Forms.Frame.1", "fraSummary", "Workflow summary", 429.00, 60.00, 219.00, 246.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraSummary"), "Forms.TextBox.1", "txtSummary", "", 9.00, 18.00, 201.00, 219.00)
+    Set ctl = CPT27_AddControl(designer, "Forms.Frame.1", "fraSummary", "Workflow summary", 429#, 60#, 219#, 246#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraSummary"), "Forms.TextBox.1", "txtSummary", "", 9#, 18#, 201#, 219#)
     CPT27_SetControlProperty ctl, "Locked", True
     CPT27_SetControlProperty ctl, "MultiLine", True
     CPT27_SetControlProperty ctl, "ScrollBars", 2
 
-    Set ctl = CPT27_AddControl(designer, "Forms.Frame.1", "fraCDR", "CDR page handling", 12.00, 174.00, 204.00, 132.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraCDR"), "Forms.ComboBox.1", "cboCDRPageMode", "", 9.00, 18.00, 180.00, 16.50)
+    Set ctl = CPT27_AddControl(designer, "Forms.Frame.1", "fraCDR", "CDR page handling", 12#, 174#, 204#, 132#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraCDR"), "Forms.ComboBox.1", "cboCDRPageMode", "", 9#, 18#, 180#, 16.5)
     CPT27_SetControlProperty ctl, "Style", 2
-    Set ctl = CPT27_AddControl(designer.Controls("fraCDR"), "Forms.Label.1", "lblCDRMargin", "Margin (mm)", 9.00, 45.00, 72.00, 13.50)
-    Set ctl = CPT27_AddControl(designer.Controls("fraCDR"), "Forms.TextBox.1", "txtCDRMargin", "", 84.00, 42.00, 48.00, 16.50)
-    Set ctl = CPT27_AddControl(designer.Controls("fraCDR"), "Forms.Label.1", "lblCDRWidth", "Width", 9.00, 69.00, 36.00, 13.50)
-    Set ctl = CPT27_AddControl(designer.Controls("fraCDR"), "Forms.TextBox.1", "txtCDRWidth", "", 45.00, 66.00, 45.00, 16.50)
-    Set ctl = CPT27_AddControl(designer.Controls("fraCDR"), "Forms.Label.1", "lblCDRHeight", "Height", 99.00, 69.00, 42.00, 13.50)
-    Set ctl = CPT27_AddControl(designer.Controls("fraCDR"), "Forms.TextBox.1", "txtCDRHeight", "", 144.00, 66.00, 45.00, 16.50)
-    Set ctl = CPT27_AddControl(designer.Controls("fraCDR"), "Forms.Label.1", "lblCDRUnits", "Custom size in mm", 9.00, 87.00, 93.00, 12.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraCDR"), "Forms.CheckBox.1", "chkIncludeOutlines", "Include outline width in fitted bounds", 9.00, 105.00, 180.00, 15.00)
+    Set ctl = CPT27_AddControl(designer.Controls("fraCDR"), "Forms.Label.1", "lblCDRMargin", "Margin (mm)", 9#, 45#, 72#, 13.5)
+    Set ctl = CPT27_AddControl(designer.Controls("fraCDR"), "Forms.TextBox.1", "txtCDRMargin", "", 84#, 42#, 48#, 16.5)
+    Set ctl = CPT27_AddControl(designer.Controls("fraCDR"), "Forms.Label.1", "lblCDRWidth", "Width", 9#, 69#, 36#, 13.5)
+    Set ctl = CPT27_AddControl(designer.Controls("fraCDR"), "Forms.TextBox.1", "txtCDRWidth", "", 45#, 66#, 45#, 16.5)
+    Set ctl = CPT27_AddControl(designer.Controls("fraCDR"), "Forms.Label.1", "lblCDRHeight", "Height", 99#, 69#, 42#, 13.5)
+    Set ctl = CPT27_AddControl(designer.Controls("fraCDR"), "Forms.TextBox.1", "txtCDRHeight", "", 144#, 66#, 45#, 16.5)
+    Set ctl = CPT27_AddControl(designer.Controls("fraCDR"), "Forms.Label.1", "lblCDRUnits", "Custom size in mm", 9#, 87#, 93#, 12#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraCDR"), "Forms.CheckBox.1", "chkIncludeOutlines", "Include outline width in fitted bounds", 9#, 105#, 180#, 15#)
 
-    Set ctl = CPT27_AddControl(designer, "Forms.Frame.1", "fraPDF", "PDF page handling", 225.00, 174.00, 195.00, 132.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraPDF"), "Forms.ComboBox.1", "cboPDFPageMode", "", 9.00, 18.00, 177.00, 16.50)
+    Set ctl = CPT27_AddControl(designer, "Forms.Frame.1", "fraPDF", "PDF page handling", 225#, 174#, 195#, 132#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraPDF"), "Forms.ComboBox.1", "cboPDFPageMode", "", 9#, 18#, 177#, 16.5)
     CPT27_SetControlProperty ctl, "Style", 2
-    Set ctl = CPT27_AddControl(designer.Controls("fraPDF"), "Forms.Label.1", "lblPDFMargin", "Margin (mm)", 9.00, 45.00, 72.00, 13.50)
-    Set ctl = CPT27_AddControl(designer.Controls("fraPDF"), "Forms.TextBox.1", "txtPDFMargin", "", 84.00, 42.00, 48.00, 16.50)
-    Set ctl = CPT27_AddControl(designer.Controls("fraPDF"), "Forms.Label.1", "lblPDFWidth", "Width", 9.00, 69.00, 36.00, 13.50)
-    Set ctl = CPT27_AddControl(designer.Controls("fraPDF"), "Forms.TextBox.1", "txtPDFWidth", "", 45.00, 66.00, 45.00, 16.50)
-    Set ctl = CPT27_AddControl(designer.Controls("fraPDF"), "Forms.Label.1", "lblPDFHeight", "Height", 99.00, 69.00, 42.00, 13.50)
-    Set ctl = CPT27_AddControl(designer.Controls("fraPDF"), "Forms.TextBox.1", "txtPDFHeight", "", 144.00, 66.00, 42.00, 16.50)
-    Set ctl = CPT27_AddControl(designer.Controls("fraPDF"), "Forms.Label.1", "lblPDFUnits", "Custom size in mm", 9.00, 87.00, 93.00, 12.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraPDF"), "Forms.CheckBox.1", "chkIncludeDimensions", "Include DIMENSIONS layer in fitted page size", 9.00, 102.00, 177.00, 27.00)
+    Set ctl = CPT27_AddControl(designer.Controls("fraPDF"), "Forms.Label.1", "lblPDFMargin", "Margin (mm)", 9#, 45#, 72#, 13.5)
+    Set ctl = CPT27_AddControl(designer.Controls("fraPDF"), "Forms.TextBox.1", "txtPDFMargin", "", 84#, 42#, 48#, 16.5)
+    Set ctl = CPT27_AddControl(designer.Controls("fraPDF"), "Forms.Label.1", "lblPDFWidth", "Width", 9#, 69#, 36#, 13.5)
+    Set ctl = CPT27_AddControl(designer.Controls("fraPDF"), "Forms.TextBox.1", "txtPDFWidth", "", 45#, 66#, 45#, 16.5)
+    Set ctl = CPT27_AddControl(designer.Controls("fraPDF"), "Forms.Label.1", "lblPDFHeight", "Height", 99#, 69#, 42#, 13.5)
+    Set ctl = CPT27_AddControl(designer.Controls("fraPDF"), "Forms.TextBox.1", "txtPDFHeight", "", 144#, 66#, 42#, 16.5)
+    Set ctl = CPT27_AddControl(designer.Controls("fraPDF"), "Forms.Label.1", "lblPDFUnits", "Custom size in mm", 9#, 87#, 93#, 12#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraPDF"), "Forms.CheckBox.1", "chkIncludeDimensions", "Include DIMENSIONS layer in fitted page size", 9#, 102#, 177#, 27#)
     CPT27_SetControlProperty ctl, "WordWrap", True
 
-    Set ctl = CPT27_AddControl(designer, "Forms.Frame.1", "fraOutput", "Output and safety", 12.00, 315.00, 408.00, 114.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraOutput"), "Forms.Label.1", "lblFolder", "Output folder", 9.00, 18.00, 66.00, 13.50)
-    Set ctl = CPT27_AddControl(designer.Controls("fraOutput"), "Forms.TextBox.1", "txtOutputFolder", "", 75.00, 15.00, 252.00, 16.50)
-    Set ctl = CPT27_AddControl(designer.Controls("fraOutput"), "Forms.CommandButton.1", "cmdBrowse", "Browse", 333.00, 14.25, 57.00, 18.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraOutput"), "Forms.CheckBox.1", "chkEnsureUnique", "Add _2, _3, etc. when files already exist", 9.00, 45.00, 186.00, 15.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraOutput"), "Forms.CheckBox.1", "chkAutoScale", "Automatically scale oversized PDF pages to 1:10", 207.00, 45.00, 183.00, 15.00)
-    Set ctl = CPT27_AddControl(designer.Controls("fraOutput"), "Forms.Label.1", "lblPDFNote", "Preserve mode extracts an exact duplicate of the source page. Fit modes group objects for sizing. Custom modes use the width and height entered above.", 9.00, 66.00, 381.00, 36.00)
+    Set ctl = CPT27_AddControl(designer, "Forms.Frame.1", "fraOutput", "Output and safety", 12#, 315#, 408#, 114#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraOutput"), "Forms.Label.1", "lblFolder", "Output folder", 9#, 18#, 66#, 13.5)
+    Set ctl = CPT27_AddControl(designer.Controls("fraOutput"), "Forms.TextBox.1", "txtOutputFolder", "", 75#, 15#, 252#, 16.5)
+    Set ctl = CPT27_AddControl(designer.Controls("fraOutput"), "Forms.CommandButton.1", "cmdBrowse", "Browse", 333#, 14.25, 57#, 18#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraOutput"), "Forms.CheckBox.1", "chkEnsureUnique", "Add _2, _3, etc. when files already exist", 9#, 45#, 186#, 15#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraOutput"), "Forms.CheckBox.1", "chkAutoScale", "Automatically scale oversized PDF pages to 1:10", 207#, 45#, 183#, 15#)
+    Set ctl = CPT27_AddControl(designer.Controls("fraOutput"), "Forms.Label.1", "lblPDFNote", "Preserve mode extracts an exact duplicate of the source page. Fit modes group objects for sizing. Custom modes use the width and height entered above.", 9#, 66#, 381#, 36#)
     CPT27_SetControlProperty ctl, "WordWrap", True
 
-    Set ctl = CPT27_AddControl(designer, "Forms.Frame.1", "fraProgress", "Progress", 429.00, 315.00, 219.00, 108.00)
+    Set ctl = CPT27_AddControl(designer, "Forms.Frame.1", "fraProgress", "Progress", 429#, 315#, 219#, 108#)
     CPT27_SetControlProperty ctl, "Visible", False
-    Set ctl = CPT27_AddControl(designer.Controls("fraProgress"), "Forms.Label.1", "lblProgressText", "Ready", 9.00, 15.00, 201.00, 36.00)
+    Set ctl = CPT27_AddControl(designer.Controls("fraProgress"), "Forms.Label.1", "lblProgressText", "Ready", 9#, 15#, 201#, 36#)
     CPT27_SetControlProperty ctl, "WordWrap", True
-    Set ctl = CPT27_AddControl(designer.Controls("fraProgress"), "Forms.Label.1", "lblProgressFill", "", 9.00, 54.00, 3.00, 12.00)
-    CPT27_SetControlProperty ctl, "BackColor", &H8000000D&
+    Set ctl = CPT27_AddControl(designer.Controls("fraProgress"), "Forms.Label.1", "lblProgressFill", "", 9#, 54#, 3#, 12#)
+    CPT27_SetControlProperty ctl, "BackColor", &H8000000D
     CPT27_SetControlProperty ctl, "BorderStyle", 1
-    Set ctl = CPT27_AddControl(designer.Controls("fraProgress"), "Forms.CommandButton.1", "cmdCancel", "Cancel", 153.00, 78.00, 57.00, 18.00)
+    Set ctl = CPT27_AddControl(designer.Controls("fraProgress"), "Forms.CommandButton.1", "cmdCancel", "Cancel", 153#, 78#, 57#, 18#)
     CPT27_SetControlProperty ctl, "Enabled", False
 
-    Set ctl = CPT27_AddControl(designer, "Forms.CommandButton.1", "cmdPreflight", "Preflight", 360.00, 444.00, 75.00, 24.00)
-    Set ctl = CPT27_AddControl(designer, "Forms.CommandButton.1", "cmdRun", "Run Workflow", 444.00, 444.00, 102.00, 24.00)
-    Set ctl = CPT27_AddControl(designer, "Forms.CommandButton.1", "cmdClose", "Close", 555.00, 444.00, 75.00, 24.00)
-    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblCopyright", "Copyright (c) 2026 VFE Flavius. All rights reserved.", 12.00, 486.00, 636.00, 13.50)
+    Set ctl = CPT27_AddControl(designer, "Forms.CommandButton.1", "cmdPreflight", "Preflight", 360#, 444#, 75#, 24#)
+    Set ctl = CPT27_AddControl(designer, "Forms.CommandButton.1", "cmdRun", "Run Workflow", 444#, 444#, 102#, 24#)
+    Set ctl = CPT27_AddControl(designer, "Forms.CommandButton.1", "cmdClose", "Close", 555#, 444#, 75#, 24#)
+    Set ctl = CPT27_AddControl(designer, "Forms.Label.1", "lblCopyright", "Copyright (c) 2026 VFE Flavius. All rights reserved.", 12#, 486#, 636#, 13.5)
     CPT27_SetControlProperty ctl, "TextAlign", 2
 
     CPT27_SetCode comp, CPT27_frmVFEExportWorkflow_Code()
@@ -264,7 +268,7 @@ End Sub
 
 Private Sub CPT27_SetComponentProperty(ByVal comp As Object, ByVal propertyName As String, ByVal propertyValue As Variant)
     On Error Resume Next
-    comp.Properties(propertyName).Value = propertyValue
+    comp.Properties(propertyName).value = propertyValue
     On Error GoTo 0
 End Sub
 

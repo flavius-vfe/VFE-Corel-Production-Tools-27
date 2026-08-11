@@ -1,8 +1,8 @@
 Attribute VB_Name = "VFE_CorelProductionTools27"
 Option Explicit
 
-' SPDX-License-Identifier: LicenseRef-VFE-Proprietary-1.1
-' Licensed under the VFE Proprietary Software License v1.1.
+' SPDX-License-Identifier: LicenseRef-VFE-Proprietary-1.0
+' Licensed under the VFE Proprietary Software License v1.0.
 ' See LICENSE.md in the distribution package.
 
 ' ============================================================================
@@ -91,57 +91,57 @@ End Enum
 Private Type CPTExportOptions
     Scope As CPTExportScope
     NameMode As CPTNameMode
-    CustomName As String
-    OutputFolder As String
+    customName As String
+    outputFolder As String
 
-    ExportCurrentCDR As Boolean
-    ExportV15CDR As Boolean
-    ExportCurvesCurrentCDR As Boolean
-    ExportCurvesV15CDR As Boolean
-    ExportCurvesPDF As Boolean
+    exportCurrentCDR As Boolean
+    exportV15CDR As Boolean
+    exportCurvesCurrentCDR As Boolean
+    exportCurvesV15CDR As Boolean
+    exportCurvesPDF As Boolean
 
     ' CDR page preparation. FitPageToArtwork/ MarginMM are retained for
     ' backward compatibility with the legacy prompt interface.
     FitPageToArtwork As Boolean
-    IncludeOutlines As Boolean
-    MarginMM As Double
+    includeOutlines As Boolean
+    marginMM As Double
     CDRPageMode As CPTCDRPageMode
-    CDRCustomWidthMM As Double
-    CDRCustomHeightMM As Double
+    cdrCustomWidthMM As Double
+    cdrCustomHeightMM As Double
 
     PDFPageMode As CPTPDFPageMode
-    PDFMarginMM As Double
-    PDFCustomWidthMM As Double
-    PDFCustomHeightMM As Double
+    pdfMarginMM As Double
+    pdfCustomWidthMM As Double
+    pdfCustomHeightMM As Double
 
-    RenameSourcePages As Boolean
-    AutoScaleLargePDF As Boolean
-    EnsureUniqueNames As Boolean
+    renameSourcePages As Boolean
+    autoScaleLargePDF As Boolean
+    ensureUniqueNames As Boolean
 End Type
 
 Private Type CPTDimensionOptions
     Enabled As Boolean
-    TargetMode As CPTDimensionTarget
+    targetMode As CPTDimensionTarget
     Axes As CPTDimensionAxes
-    Mode As CPTDimensionMode
-    UnitText As String
-    Decimals As Long
-    FontName As String
-    FontSizePt As Double
-    LineOffsetMM As Double
+    mode As CPTDimensionMode
+    unitText As String
+    decimals As Long
+    fontName As String
+    fontSizePt As Double
+    lineOffsetMM As Double
     IncludeInPageFit As Boolean
     RemoveOldDimensions As Boolean
-    GroupCreated As Boolean
+    groupCreated As Boolean
     ColorR As Long
     ColorG As Long
     ColorB As Long
 End Type
 
 Private Type CPTBoundingBox
-    X As Double
-    Y As Double
-    W As Double
-    H As Double
+    x As Double
+    y As Double
+    w As Double
+    h As Double
 End Type
 
 Private Type CPTWorkflowProfile
@@ -418,9 +418,9 @@ Public Sub CPT_UI_AddDimensions( _
 
     CPT_SetDefaultDimensionOptions dimOpt
     If targetMode = 1 Then
-        dimOpt.TargetMode = cptDimensionCompleteSelection
+        dimOpt.targetMode = cptDimensionCompleteSelection
     Else
-        dimOpt.TargetMode = cptDimensionEachObject
+        dimOpt.targetMode = cptDimensionEachObject
     End If
 
     If addWidth And addHeight Then
@@ -433,21 +433,21 @@ Public Sub CPT_UI_AddDimensions( _
 
     unitText = LCase$(Trim$(unitText))
     If unitText <> "mm" And unitText <> "cm" And unitText <> "in" Then unitText = "cm"
-    dimOpt.UnitText = unitText
+    dimOpt.unitText = unitText
     If decimals < 0 Then decimals = 0
     If decimals > 4 Then decimals = 4
-    dimOpt.Decimals = decimals
-    dimOpt.FontName = Trim$(fontName)
-    If Len(dimOpt.FontName) = 0 Then dimOpt.FontName = "Arial"
+    dimOpt.decimals = decimals
+    dimOpt.fontName = Trim$(fontName)
+    If Len(dimOpt.fontName) = 0 Then dimOpt.fontName = "Arial"
     If fontSizePt <= 0# Then fontSizePt = 10#
-    dimOpt.FontSizePt = fontSizePt
+    dimOpt.fontSizePt = fontSizePt
     If lineOffsetMM <= 0# Then lineOffsetMM = 5#
-    dimOpt.LineOffsetMM = lineOffsetMM
+    dimOpt.lineOffsetMM = lineOffsetMM
     dimOpt.RemoveOldDimensions = removeOld
-    dimOpt.GroupCreated = groupCreated
+    dimOpt.groupCreated = groupCreated
     CPT_SetDimensionColor dimOpt, colorName
 
-    If Not CPT_CaptureSelectionSpecs(ActiveSelectionRange, dimOpt.TargetMode, specs, specCount) Then Exit Sub
+    If Not CPT_CaptureSelectionSpecs(ActiveSelectionRange, dimOpt.targetMode, specs, specCount) Then Exit Sub
     If dimOpt.RemoveOldDimensions Then CPT_RemoveDimensionLayerContents ActiveDocument.ActivePage
     Set createdShape = CPT_CreateDimensionsFromSpecs(ActiveDocument.ActivePage, dimOpt, specs, specCount)
 
@@ -496,29 +496,29 @@ Public Sub CPT_UI_RunExport( _
     CPT_SetDefaultOptions opt
     opt.Scope = scopeValue
     opt.NameMode = nameModeValue
-    opt.CustomName = customName
-    opt.OutputFolder = outputFolder
-    opt.ExportCurrentCDR = exportCurrentCDR
-    opt.ExportV15CDR = exportV15CDR
-    opt.ExportCurvesCurrentCDR = exportCurvesCurrentCDR
-    opt.ExportCurvesV15CDR = exportCurvesV15CDR
-    opt.ExportCurvesPDF = exportCurvesPDF
+    opt.customName = customName
+    opt.outputFolder = outputFolder
+    opt.exportCurrentCDR = exportCurrentCDR
+    opt.exportV15CDR = exportV15CDR
+    opt.exportCurvesCurrentCDR = exportCurvesCurrentCDR
+    opt.exportCurvesV15CDR = exportCurvesV15CDR
+    opt.exportCurvesPDF = exportCurvesPDF
 
     opt.CDRPageMode = cdrPageModeValue
-    opt.MarginMM = cdrMarginMM
-    opt.CDRCustomWidthMM = cdrCustomWidthMM
-    opt.CDRCustomHeightMM = cdrCustomHeightMM
+    opt.marginMM = cdrMarginMM
+    opt.cdrCustomWidthMM = cdrCustomWidthMM
+    opt.cdrCustomHeightMM = cdrCustomHeightMM
     opt.FitPageToArtwork = (opt.CDRPageMode = cptCDRFitNoMargin Or opt.CDRPageMode = cptCDRFitCustomMargin)
 
     opt.PDFPageMode = pdfPageModeValue
-    opt.PDFMarginMM = pdfMarginMM
-    opt.PDFCustomWidthMM = pdfCustomWidthMM
-    opt.PDFCustomHeightMM = pdfCustomHeightMM
+    opt.pdfMarginMM = pdfMarginMM
+    opt.pdfCustomWidthMM = pdfCustomWidthMM
+    opt.pdfCustomHeightMM = pdfCustomHeightMM
 
-    opt.IncludeOutlines = includeOutlines
-    opt.RenameSourcePages = renameSourcePages
-    opt.AutoScaleLargePDF = autoScaleLargePDF
-    opt.EnsureUniqueNames = ensureUniqueNames
+    opt.includeOutlines = includeOutlines
+    opt.renameSourcePages = renameSourcePages
+    opt.autoScaleLargePDF = autoScaleLargePDF
+    opt.ensureUniqueNames = ensureUniqueNames
 
     gCancelRequested = False
     gUIExportActive = True
@@ -643,7 +643,7 @@ Private Function CPT_UI_ResolveAllNameForPreflight( _
     Dim opt As CPTExportOptions
     CPT_SetDefaultOptions opt
     opt.NameMode = nameModeValue
-    opt.CustomName = customName
+    opt.customName = customName
     CPT_UI_ResolveAllNameForPreflight = CPT_ResolveAllPagesBaseName(doc, opt)
 End Function
 
@@ -654,7 +654,7 @@ Private Function CPT_UI_ResolveNameForPreflight( _
     Dim opt As CPTExportOptions
     CPT_SetDefaultOptions opt
     opt.NameMode = nameModeValue
-    opt.CustomName = customName
+    opt.customName = customName
     CPT_UI_ResolveNameForPreflight = CPT_ResolvePageName(doc, pg, opt, pageIndex)
 End Function
 
@@ -678,16 +678,16 @@ Public Sub CPT_Preset3FormatsPerPage()
     CPT_SetDefaultOptions opt
     opt.Scope = cptScopeEachPage
     opt.NameMode = cptNameExportField
-    opt.ExportCurrentCDR = True
-    opt.ExportCurvesCurrentCDR = True
-    opt.ExportCurvesPDF = True
+    opt.exportCurrentCDR = True
+    opt.exportCurvesCurrentCDR = True
+    opt.exportCurvesPDF = True
     opt.FitPageToArtwork = False
     opt.CDRPageMode = cptCDRKeepOriginalPage
     opt.PDFPageMode = cptPDFKeepOriginalPage
-    opt.RenameSourcePages = True
+    opt.renameSourcePages = True
 
-    opt.OutputFolder = CPT_GetFolderFromUser("Choose folder for 3-format page export")
-    If Len(opt.OutputFolder) = 0 Then Exit Sub
+    opt.outputFolder = CPT_GetFolderFromUser("Choose folder for 3-format page export")
+    If Len(opt.outputFolder) = 0 Then Exit Sub
 
     CPT_RunExport opt
 End Sub
@@ -704,19 +704,19 @@ Public Sub CPT_Preset5FormatsPerPage()
     CPT_SetDefaultOptions opt
     opt.Scope = cptScopeEachPage
     opt.NameMode = mode
-    opt.ExportCurrentCDR = True
-    opt.ExportV15CDR = True
-    opt.ExportCurvesCurrentCDR = True
-    opt.ExportCurvesV15CDR = True
-    opt.ExportCurvesPDF = True
+    opt.exportCurrentCDR = True
+    opt.exportV15CDR = True
+    opt.exportCurvesCurrentCDR = True
+    opt.exportCurvesV15CDR = True
+    opt.exportCurvesPDF = True
     opt.FitPageToArtwork = True
     opt.CDRPageMode = cptCDRFitCustomMargin
     opt.PDFPageMode = cptPDFFitCustomMargin
-    opt.PDFMarginMM = DEFAULT_MARGIN_MM
-    opt.RenameSourcePages = True
+    opt.pdfMarginMM = DEFAULT_MARGIN_MM
+    opt.renameSourcePages = True
 
-    opt.OutputFolder = CPT_GetFolderFromUser("Choose folder for 5-format page export")
-    If Len(opt.OutputFolder) = 0 Then Exit Sub
+    opt.outputFolder = CPT_GetFolderFromUser("Choose folder for 5-format page export")
+    If Len(opt.outputFolder) = 0 Then Exit Sub
 
     CPT_RunExport opt
 End Sub
@@ -729,19 +729,19 @@ Public Sub CPT_Preset5FormatsAllPages()
     CPT_SetDefaultOptions opt
     opt.Scope = cptScopeAllPages
     opt.NameMode = cptNameDocument
-    opt.ExportCurrentCDR = True
-    opt.ExportV15CDR = True
-    opt.ExportCurvesCurrentCDR = True
-    opt.ExportCurvesV15CDR = True
-    opt.ExportCurvesPDF = True
+    opt.exportCurrentCDR = True
+    opt.exportV15CDR = True
+    opt.exportCurvesCurrentCDR = True
+    opt.exportCurvesV15CDR = True
+    opt.exportCurvesPDF = True
     opt.FitPageToArtwork = True
     opt.CDRPageMode = cptCDRFitCustomMargin
     opt.PDFPageMode = cptPDFFitCustomMargin
-    opt.PDFMarginMM = DEFAULT_MARGIN_MM
-    opt.RenameSourcePages = True
+    opt.pdfMarginMM = DEFAULT_MARGIN_MM
+    opt.renameSourcePages = True
 
-    opt.OutputFolder = CPT_GetFolderFromUser("Choose folder for all-pages 5-format export")
-    If Len(opt.OutputFolder) = 0 Then Exit Sub
+    opt.outputFolder = CPT_GetFolderFromUser("Choose folder for all-pages 5-format export")
+    If Len(opt.outputFolder) = 0 Then Exit Sub
 
     CPT_RunExport opt
 End Sub
@@ -754,15 +754,15 @@ Public Sub CPT_PresetCurvesCopy()
     CPT_SetDefaultOptions opt
     opt.Scope = cptScopeAllPages
     opt.NameMode = cptNameDocument
-    opt.ExportCurvesCurrentCDR = True
-    opt.ExportCurvesPDF = True
+    opt.exportCurvesCurrentCDR = True
+    opt.exportCurvesPDF = True
     opt.FitPageToArtwork = False
     opt.CDRPageMode = cptCDRKeepOriginalPage
     opt.PDFPageMode = cptPDFKeepOriginalPage
-    opt.RenameSourcePages = False
+    opt.renameSourcePages = False
 
-    opt.OutputFolder = CPT_GetFolderFromUser("Choose folder for curves CDR and PDF")
-    If Len(opt.OutputFolder) = 0 Then Exit Sub
+    opt.outputFolder = CPT_GetFolderFromUser("Choose folder for curves CDR and PDF")
+    If Len(opt.outputFolder) = 0 Then Exit Sub
 
     CPT_RunExport opt
 End Sub
@@ -803,10 +803,10 @@ Private Sub CPT_RunExport(ByRef opt As CPTExportOptions)
         Exit Sub
     End If
 
-    opt.OutputFolder = CPT_NormalizeFolder(opt.OutputFolder)
-    If Len(opt.OutputFolder) = 0 Then Exit Sub
-    If Not CPT_FolderExists(opt.OutputFolder) Then
-        MsgBox "The output folder does not exist:" & vbCrLf & opt.OutputFolder, vbExclamation
+    opt.outputFolder = CPT_NormalizeFolder(opt.outputFolder)
+    If Len(opt.outputFolder) = 0 Then Exit Sub
+    If Not CPT_FolderExists(opt.outputFolder) Then
+        MsgBox "The output folder does not exist:" & vbCrLf & opt.outputFolder, vbExclamation
         Exit Sub
     End If
 
@@ -825,7 +825,7 @@ Private Sub CPT_RunExport(ByRef opt As CPTExportOptions)
               CPT_COPYRIGHT & vbCrLf & _
               "Started: " & Format$(Now, "yyyy-mm-dd hh:nn:ss") & vbCrLf & _
               "Source: " & CPT_GetDocumentDisplayName(srcDoc) & vbCrLf & _
-              "Folder: " & opt.OutputFolder & vbCrLf
+              "Folder: " & opt.outputFolder & vbCrLf
 
     If gWorkflowActive Then
         logText = logText & "Workflow profile: " & gWorkflowName & vbCrLf
@@ -833,8 +833,8 @@ Private Sub CPT_RunExport(ByRef opt As CPTExportOptions)
             logText = logText & "Dimensions: " & CPT_DimensionOptionsSummary(gWorkflowDimensionOptions) & vbCrLf
         End If
     End If
-    logText = logText & "CDR page mode: " & CPT_CDRPageModeText(opt.CDRPageMode, opt.MarginMM, opt.CDRCustomWidthMM, opt.CDRCustomHeightMM) & vbCrLf & _
-              "PDF page mode: " & CPT_PDFPageModeText(opt.PDFPageMode, opt.PDFMarginMM, opt.PDFCustomWidthMM, opt.PDFCustomHeightMM) & vbCrLf & _
+    logText = logText & "CDR page mode: " & CPT_CDRPageModeText(opt.CDRPageMode, opt.marginMM, opt.cdrCustomWidthMM, opt.cdrCustomHeightMM) & vbCrLf & _
+              "PDF page mode: " & CPT_PDFPageModeText(opt.PDFPageMode, opt.pdfMarginMM, opt.pdfCustomWidthMM, opt.pdfCustomHeightMM) & vbCrLf & _
               String$(72, "-") & vbCrLf
 
     Select Case opt.Scope
@@ -857,7 +857,7 @@ Private Sub CPT_RunExport(ByRef opt As CPTExportOptions)
         logText = logText & "Warnings:" & vbCrLf & warningText & vbCrLf
     End If
 
-    logPath = opt.OutputFolder & "VFE_CPT27_export_log_" & Format$(Now, "yyyymmdd_hhnnss") & ".txt"
+    logPath = opt.outputFolder & "VFE_CPT27_export_log_" & Format$(Now, "yyyymmdd_hhnnss") & ".txt"
     CPT_WriteTextFile logPath, logText
 
 CleanExit:
@@ -948,9 +948,9 @@ Private Sub CPT_ExportSeparatePages( _
 
         rawName = CPT_ResolvePageName(srcDoc, srcPage, opt, pageIndex)
         safeName = CPT_MakeSafeFileName(rawName)
-        uniqueName = CPT_ResolveUniqueBaseName(opt.OutputFolder, safeName, opt)
+        uniqueName = CPT_ResolveUniqueBaseName(opt.outputFolder, safeName, opt)
 
-        If opt.RenameSourcePages Then
+        If opt.renameSourcePages Then
             On Error Resume Next
             srcPage.Name = safeName
             On Error GoTo 0
@@ -960,21 +960,21 @@ Private Sub CPT_ExportSeparatePages( _
             "Page " & CStr(pageNumberInJob) & " of " & CStr(totalPagesInJob) & ": " & uniqueName
 
         ' -------------------- Normal CDR copies --------------------
-        If opt.ExportCurrentCDR Or opt.ExportV15CDR Then
+        If opt.exportCurrentCDR Or opt.exportV15CDR Then
             Set normalDoc = CPT_CreateSinglePageDocument(srcDoc, srcPage)
             normalDoc.ActivePage.Name = uniqueName
             CPT_ApplyWorkflowDimensionsToTempPage normalDoc.ActivePage, pageIndex
 
             CPT_PrepareCDRPage normalDoc, normalDoc.ActivePage, opt
 
-            CPT_SaveNormalFormats normalDoc, opt.OutputFolder, uniqueName, opt, fileCount, logText
+            CPT_SaveNormalFormats normalDoc, opt.outputFolder, uniqueName, opt, fileCount, logText
             CPT_CloseTemporaryDocument normalDoc
         End If
 
         CPT_CheckCancelled
 
         ' -------------------- Curved CDR copies --------------------
-        If opt.ExportCurvesCurrentCDR Or opt.ExportCurvesV15CDR Then
+        If opt.exportCurvesCurrentCDR Or opt.exportCurvesV15CDR Then
             Set curvesDoc = CPT_CreateSinglePageDocument(srcDoc, srcPage)
             curvesDoc.ActivePage.Name = uniqueName & CURVES_SUFFIX
             CPT_ApplyWorkflowDimensionsToTempPage curvesDoc.ActivePage, pageIndex
@@ -984,7 +984,7 @@ Private Sub CPT_ExportSeparatePages( _
 
             CPT_PrepareCDRPage curvesDoc, curvesDoc.ActivePage, opt
 
-            CPT_SaveCurvedFormats curvesDoc, opt.OutputFolder, uniqueName, opt, fileCount, logText
+            CPT_SaveCurvedFormats curvesDoc, opt.outputFolder, uniqueName, opt, fileCount, logText
             CPT_CloseTemporaryDocument curvesDoc
         End If
 
@@ -992,7 +992,7 @@ Private Sub CPT_ExportSeparatePages( _
 
         ' -------------------- PDF has its own temporary copy --------------------
         ' This guarantees large-format PDF scaling never changes curved CDR output.
-        If opt.ExportCurvesPDF Then
+        If opt.exportCurvesPDF Then
             Set pdfDoc = CPT_CreateSinglePageDocument(srcDoc, srcPage)
             pdfDoc.ActivePage.Name = uniqueName & CURVES_SUFFIX
             CPT_ApplyWorkflowDimensionsToTempPage pdfDoc.ActivePage, pageIndex
@@ -1002,16 +1002,16 @@ Private Sub CPT_ExportSeparatePages( _
 
             CPT_PreparePDFPage pdfDoc, pdfDoc.ActivePage, opt
 
-            pageWarning = CPT_HandleLargePDFPage(pdfDoc, pdfDoc.ActivePage, uniqueName, opt.AutoScaleLargePDF)
+            pageWarning = CPT_HandleLargePDFPage(pdfDoc, pdfDoc.ActivePage, uniqueName, opt.autoScaleLargePDF)
             If Len(pageWarning) > 0 Then
                 CPT_AppendLine warningText, pageWarning
                 CPT_AppendLine logText, "WARNING: " & pageWarning
             End If
 
             CPT_SetupPDFSettings pdfDoc
-            pdfDoc.PublishToPDF opt.OutputFolder & uniqueName & CURVES_SUFFIX & ".pdf"
+            pdfDoc.PublishToPDF opt.outputFolder & uniqueName & CURVES_SUFFIX & ".pdf"
             fileCount = fileCount + 1
-            CPT_AppendLine logText, "PDF: " & opt.OutputFolder & uniqueName & CURVES_SUFFIX & ".pdf"
+            CPT_AppendLine logText, "PDF: " & opt.outputFolder & uniqueName & CURVES_SUFFIX & ".pdf"
 
             CPT_CloseTemporaryDocument pdfDoc
         End If
@@ -1054,27 +1054,27 @@ Private Sub CPT_ExportAllPagesTogether( _
 
     rawName = CPT_ResolveAllPagesBaseName(srcDoc, opt)
     safeName = CPT_MakeSafeFileName(rawName)
-    uniqueName = CPT_ResolveUniqueBaseName(opt.OutputFolder, safeName, opt)
+    uniqueName = CPT_ResolveUniqueBaseName(opt.outputFolder, safeName, opt)
 
-    If opt.RenameSourcePages Then CPT_RenamePagesFromExportField srcDoc
+    If opt.renameSourcePages Then CPT_RenamePagesFromExportField srcDoc
 
     CPT_ProgressSet 1, 3, "Preparing normal all-pages document: " & uniqueName
 
-    If opt.ExportCurrentCDR Or opt.ExportV15CDR Then
+    If opt.exportCurrentCDR Or opt.exportV15CDR Then
         Set normalDoc = CPT_DuplicateWholeDocument(srcDoc)
         CPT_RenamePagesFromExportField normalDoc
         CPT_ApplyWorkflowDimensionsToDocument normalDoc
 
         CPT_PrepareAllCDRPages normalDoc, opt
 
-        CPT_SaveNormalFormats normalDoc, opt.OutputFolder, uniqueName, opt, fileCount, logText
+        CPT_SaveNormalFormats normalDoc, opt.outputFolder, uniqueName, opt, fileCount, logText
         CPT_CloseTemporaryDocument normalDoc
     End If
 
     CPT_CheckCancelled
     CPT_ProgressSet 2, 3, "Preparing curved all-pages document: " & uniqueName
 
-    If opt.ExportCurvesCurrentCDR Or opt.ExportCurvesV15CDR Then
+    If opt.exportCurvesCurrentCDR Or opt.exportCurvesV15CDR Then
         Set curvesDoc = CPT_DuplicateWholeDocument(srcDoc)
         CPT_RenamePagesFromExportField curvesDoc
         CPT_ApplyWorkflowDimensionsToDocument curvesDoc
@@ -1083,14 +1083,14 @@ Private Sub CPT_ExportAllPagesTogether( _
 
         CPT_PrepareAllCDRPages curvesDoc, opt
 
-        CPT_SaveCurvedFormats curvesDoc, opt.OutputFolder, uniqueName, opt, fileCount, logText
+        CPT_SaveCurvedFormats curvesDoc, opt.outputFolder, uniqueName, opt, fileCount, logText
         CPT_CloseTemporaryDocument curvesDoc
     End If
 
     CPT_CheckCancelled
     CPT_ProgressSet 3, 3, "Publishing curved all-pages PDF: " & uniqueName
 
-    If opt.ExportCurvesPDF Then
+    If opt.exportCurvesPDF Then
         Set pdfDoc = CPT_DuplicateWholeDocument(srcDoc)
         CPT_RenamePagesFromExportField pdfDoc
         CPT_ApplyWorkflowDimensionsToDocument pdfDoc
@@ -1099,16 +1099,16 @@ Private Sub CPT_ExportAllPagesTogether( _
 
         CPT_PrepareAllPDFPages pdfDoc, opt
 
-        pdfWarnings = CPT_HandleLargePDFDocument(pdfDoc, opt.AutoScaleLargePDF)
+        pdfWarnings = CPT_HandleLargePDFDocument(pdfDoc, opt.autoScaleLargePDF)
         If Len(pdfWarnings) > 0 Then
             CPT_AppendLine warningText, pdfWarnings
             CPT_AppendLine logText, "WARNING: " & pdfWarnings
         End If
 
         CPT_SetupPDFSettings pdfDoc
-        pdfDoc.PublishToPDF opt.OutputFolder & uniqueName & CURVES_SUFFIX & ".pdf"
+        pdfDoc.PublishToPDF opt.outputFolder & uniqueName & CURVES_SUFFIX & ".pdf"
         fileCount = fileCount + 1
-        CPT_AppendLine logText, "PDF: " & opt.OutputFolder & uniqueName & CURVES_SUFFIX & ".pdf"
+        CPT_AppendLine logText, "PDF: " & opt.outputFolder & uniqueName & CURVES_SUFFIX & ".pdf"
 
         CPT_CloseTemporaryDocument pdfDoc
     End If
@@ -1143,7 +1143,7 @@ Private Sub CPT_SaveNormalFormats( _
     CPT_SetupSaveOptions saveCurrent, cdrCurrentVersion
     CPT_SetupSaveOptions saveV15, cdrVersion15
 
-    If opt.ExportCurrentCDR Then
+    If opt.exportCurrentCDR Then
         path = folderPath & baseName & ".cdr"
         doc.SaveAs path, saveCurrent
         hasLinkedSave = True
@@ -1151,7 +1151,7 @@ Private Sub CPT_SaveNormalFormats( _
         CPT_AppendLine logText, "CDR: " & path
     End If
 
-    If opt.ExportV15CDR Then
+    If opt.exportV15CDR Then
         path = folderPath & baseName & V15_SUFFIX & ".cdr"
         If hasLinkedSave Then
             doc.SaveAsCopy path, saveV15
@@ -1180,7 +1180,7 @@ Private Sub CPT_SaveCurvedFormats( _
     CPT_SetupSaveOptions saveCurrent, cdrCurrentVersion
     CPT_SetupSaveOptions saveV15, cdrVersion15
 
-    If opt.ExportCurvesCurrentCDR Then
+    If opt.exportCurvesCurrentCDR Then
         path = folderPath & baseName & CURVES_SUFFIX & ".cdr"
         doc.SaveAs path, saveCurrent
         hasLinkedSave = True
@@ -1188,7 +1188,7 @@ Private Sub CPT_SaveCurvedFormats( _
         CPT_AppendLine logText, "Curves CDR: " & path
     End If
 
-    If opt.ExportCurvesV15CDR Then
+    If opt.exportCurvesV15CDR Then
         path = folderPath & baseName & CURVES_SUFFIX & V15_SUFFIX & ".cdr"
         If hasLinkedSave Then
             doc.SaveAsCopy path, saveV15
@@ -1291,13 +1291,13 @@ End Sub
 Private Sub CPT_PrepareCDRPage(ByVal doc As Document, ByVal pg As Page, ByRef opt As CPTExportOptions)
     Select Case opt.CDRPageMode
         Case cptCDRFitNoMargin
-            CPT_PreparePageForExport doc, pg, 0#, opt.IncludeOutlines, CPT_WorkflowIncludesDimensionsInFit()
+            CPT_PreparePageForExport doc, pg, 0#, opt.includeOutlines, CPT_WorkflowIncludesDimensionsInFit()
         Case cptCDRFitCustomMargin
-            CPT_PreparePageForExport doc, pg, opt.MarginMM, opt.IncludeOutlines, CPT_WorkflowIncludesDimensionsInFit()
+            CPT_PreparePageForExport doc, pg, opt.marginMM, opt.includeOutlines, CPT_WorkflowIncludesDimensionsInFit()
         Case cptCDRCustomKeepPositions
-            CPT_SetCustomPageSize doc, pg, opt.CDRCustomWidthMM, opt.CDRCustomHeightMM, False
+            CPT_SetCustomPageSize doc, pg, opt.cdrCustomWidthMM, opt.cdrCustomHeightMM, False
         Case cptCDRCustomCenterObjects
-            CPT_SetCustomPageSize doc, pg, opt.CDRCustomWidthMM, opt.CDRCustomHeightMM, True
+            CPT_SetCustomPageSize doc, pg, opt.cdrCustomWidthMM, opt.cdrCustomHeightMM, True
         Case Else
             ' The page was extracted from an exact duplicate of the source
             ' document, so its original page size and object positions are kept.
@@ -1332,15 +1332,15 @@ End Sub
 Private Sub CPT_PreparePDFPage(ByVal doc As Document, ByVal pg As Page, ByRef opt As CPTExportOptions)
     Select Case opt.PDFPageMode
         Case cptPDFFitNoMargin
-            CPT_PreparePageForExport doc, pg, 0#, opt.IncludeOutlines, CPT_WorkflowIncludesDimensionsInFit()
+            CPT_PreparePageForExport doc, pg, 0#, opt.includeOutlines, CPT_WorkflowIncludesDimensionsInFit()
         Case cptPDFFitCustomMargin
-            CPT_PreparePageForExport doc, pg, opt.PDFMarginMM, opt.IncludeOutlines, CPT_WorkflowIncludesDimensionsInFit()
+            CPT_PreparePageForExport doc, pg, opt.pdfMarginMM, opt.includeOutlines, CPT_WorkflowIncludesDimensionsInFit()
         Case cptPDFKeepOriginalPage
             ' Keep the source page width, height and object positions unchanged.
         Case cptPDFCustomKeepPositions
-            CPT_SetCustomPageSize doc, pg, opt.PDFCustomWidthMM, opt.PDFCustomHeightMM, False
+            CPT_SetCustomPageSize doc, pg, opt.pdfCustomWidthMM, opt.pdfCustomHeightMM, False
         Case cptPDFCustomCenterObjects
-            CPT_SetCustomPageSize doc, pg, opt.PDFCustomWidthMM, opt.PDFCustomHeightMM, True
+            CPT_SetCustomPageSize doc, pg, opt.pdfCustomWidthMM, opt.pdfCustomHeightMM, True
     End Select
 End Sub
 
@@ -1365,13 +1365,16 @@ Private Sub CPT_SetCustomPageSize( _
 
     If centerObjects And pg.Shapes.Count > 0 Then
         Set sr = pg.Shapes.All
+
         If sr.Count > 1 Then
             Set grp = sr.Group
         Else
             Set grp = sr(1)
         End If
-        grp.CenterX = widthMM / 2#
-        grp.CenterY = heightMM / 2#
+
+        ' Use the real CorelDRAW page center. Do not assume page origin = 0,0.
+        grp.CenterX = pg.CenterX
+        grp.CenterY = pg.CenterY
     End If
 End Sub
 
@@ -1379,7 +1382,7 @@ Private Sub CPT_GetPageSizeMM(ByVal pg As Page, ByRef widthMM As Double, ByRef h
     Dim doc As Document
     Dim oldUnit As cdrUnit
 
-    Set doc = pg.Parent.Parent
+    Set doc = pg.parent.parent
     oldUnit = doc.Unit
     On Error GoTo SizeFail
 
@@ -1411,30 +1414,40 @@ Private Sub CPT_PreparePageForExport( _
     Dim h As Double
     Dim pageW As Double
     Dim pageH As Double
-    Dim targetCenterX As Double
-    Dim targetCenterY As Double
+    Dim artworkCenterX As Double
+    Dim artworkCenterY As Double
     Dim moveX As Double
     Dim moveY As Double
 
     doc.Unit = cdrMillimeter
     pg.Activate
+
     If pg.Shapes.Count = 0 Then Exit Sub
+    If marginMM < 0# Then marginMM = 0#
 
     Set sr = pg.Shapes.All
 
+    ' ------------------------------------------------------------
+    ' FITTED GROUPED OBJECTS:
+    ' 1) Group all page objects.
+    ' 2) Measure the required artwork bounding box.
+    ' 3) Resize the page to the artwork + optional margin.
+    ' 4) Center the group on the REAL page center.
+    ' ------------------------------------------------------------
     If includeDimensions Then
-        ' PDF modes 1 and 2 intentionally group all page objects first and use
-        ' that single grouped object's bounding box to determine the page size.
         If sr.Count > 1 Then
             Set grp = sr.Group
         Else
             Set grp = sr(1)
         End If
+
         grp.GetBoundingBox x, y, w, h, includeOutlines
     Else
-        ' Ignore the DIMENSIONS layer for size calculation, but move every object
-        ' together so artwork and dimensions keep their relative positions.
+        ' If dimensions are excluded from page-fit calculation, calculate the
+        ' artwork-only box first, then group ALL objects so their relative
+        ' positions remain unchanged while the complete page contents move.
         If Not CPT_GetPageBoundingBox(pg, includeOutlines, False, x, y, w, h) Then Exit Sub
+
         If sr.Count > 1 Then
             Set grp = sr.Group
         Else
@@ -1442,16 +1455,41 @@ Private Sub CPT_PreparePageForExport( _
         End If
     End If
 
+    If grp Is Nothing Then Exit Sub
     If w <= 0# Or h <= 0# Then Exit Sub
+
     pageW = w + (marginMM * 2#)
     pageH = h + (marginMM * 2#)
+
+    If pageW <= 0# Or pageH <= 0# Then Exit Sub
+
     pg.SetSize pageW, pageH
 
-    targetCenterX = x + (w / 2#)
-    targetCenterY = y + (h / 2#)
-    moveX = (pageW / 2#) - targetCenterX
-    moveY = (pageH / 2#) - targetCenterY
+    artworkCenterX = x + (w / 2#)
+    artworkCenterY = y + (h / 2#)
+
+    moveX = pg.CenterX - artworkCenterX
+    moveY = pg.CenterY - artworkCenterY
+
     grp.Move moveX, moveY
+
+    ' Final correction after SetSize/Move. This protects against page-coordinate
+    ' offsets and small CorelDRAW rounding differences.
+    If includeDimensions Then
+        grp.GetBoundingBox x, y, w, h, includeOutlines
+    Else
+        If Not CPT_GetPageBoundingBox(pg, includeOutlines, False, x, y, w, h) Then Exit Sub
+    End If
+
+    artworkCenterX = x + (w / 2#)
+    artworkCenterY = y + (h / 2#)
+
+    moveX = pg.CenterX - artworkCenterX
+    moveY = pg.CenterY - artworkCenterY
+
+    If Abs(moveX) > 0.0001 Or Abs(moveY) > 0.0001 Then
+        grp.Move moveX, moveY
+    End If
 End Sub
 
 Private Function CPT_GetPageBoundingBox( _
@@ -1533,26 +1571,70 @@ Private Function CPT_HandleLargePDFPage( _
     Dim w As Double
     Dim h As Double
     Dim maxSide As Double
+    Dim scaleRatio As Double
+    Dim finalW As Double
+    Dim finalH As Double
     Dim note As String
 
     doc.Unit = cdrMillimeter
     pg.Activate
+
     w = pg.SizeWidth
     h = pg.SizeHeight
-    If w > h Then maxSide = w Else maxSide = h
+
+    If w > h Then
+        maxSide = w
+    Else
+        maxSide = h
+    End If
 
     If maxSide > COREL_WARNING_MM Then
-        note = displayName & ": " & FormatNumber(w, 2) & " x " & FormatNumber(h, 2) & " mm"
+        note = displayName & ": " & _
+               FormatNumber(w, 2) & " x " & _
+               FormatNumber(h, 2) & " mm"
     End If
 
     If maxSide > PDF_SAFE_MAX_MM Then
         If autoScale Then
-            CPT_ScalePageForPDF doc, pg, PDF_SCALE_RATIO
-            If Len(note) = 0 Then note = displayName
-            note = note & " -> PDF working copy scaled 1:" & CStr(PDF_SCALE_RATIO)
+            ' Production convention: scale the PDF-only working copy by 1:10.
+            ' If 1:10 is still too large, continue 1:100, 1:1000, etc.
+            scaleRatio = 1#
+
+            Do While (maxSide / scaleRatio) > PDF_SAFE_MAX_MM
+                scaleRatio = scaleRatio * PDF_SCALE_RATIO
+
+                If scaleRatio > 1000000000# Then
+                    Err.Raise vbObjectError + 2719, _
+                              "CPT_HandleLargePDFPage", _
+                              "Could not calculate a safe PDF scale."
+                End If
+            Loop
+
+            CPT_ScalePageForPDF doc, pg, scaleRatio
+
+            finalW = pg.SizeWidth
+            finalH = pg.SizeHeight
+
+            If Len(note) = 0 Then
+                note = displayName & ": " & _
+                       FormatNumber(w, 2) & " x " & _
+                       FormatNumber(h, 2) & " mm"
+            End If
+
+            note = note & _
+                   " -> PDF working copy scaled 1:" & CStr(scaleRatio) & _
+                   " -> " & FormatNumber(finalW, 2) & _
+                   " x " & FormatNumber(finalH, 2) & " mm"
         Else
-            If Len(note) = 0 Then note = displayName
-            note = note & " -> exceeds recommended PDF maximum of about " & CStr(PDF_SAFE_MAX_MM) & " mm"
+            If Len(note) = 0 Then
+                note = displayName & ": " & _
+                       FormatNumber(w, 2) & " x " & _
+                       FormatNumber(h, 2) & " mm"
+            End If
+
+            note = note & _
+                   " -> exceeds recommended PDF maximum of about " & _
+                   CStr(PDF_SAFE_MAX_MM) & " mm"
         End If
     ElseIf maxSide > COREL_WARNING_MM Then
         note = note & " -> above recommended large-format workflow size"
@@ -1561,11 +1643,20 @@ Private Function CPT_HandleLargePDFPage( _
     CPT_HandleLargePDFPage = note
 End Function
 
-Private Sub CPT_ScalePageForPDF(ByVal doc As Document, ByVal pg As Page, ByVal scaleRatio As Double)
+Private Sub CPT_ScalePageForPDF( _
+    ByVal doc As Document, _
+    ByVal pg As Page, _
+    ByVal scaleRatio As Double)
+
     Dim sr As ShapeRange
     Dim grp As Shape
+    Dim oldW As Double
+    Dim oldH As Double
     Dim newW As Double
     Dim newH As Double
+    Dim scaleFactor As Double
+    Dim anchorX As Double
+    Dim anchorY As Double
 
     If scaleRatio <= 1# Then Exit Sub
     If pg.Shapes.Count = 0 Then Exit Sub
@@ -1573,27 +1664,55 @@ Private Sub CPT_ScalePageForPDF(ByVal doc As Document, ByVal pg As Page, ByVal s
     doc.Unit = cdrMillimeter
     pg.Activate
 
+    oldW = pg.SizeWidth
+    oldH = pg.SizeHeight
+
     Set sr = pg.Shapes.All
+
+    ' Fitted modes should already contain one grouped object. Group again only
+    ' when necessary so the complete PDF working page scales as one unit.
     If sr.Count > 1 Then
         Set grp = sr.Group
     Else
         Set grp = sr(1)
     End If
-    grp.Stretch 1# / scaleRatio, 1# / scaleRatio
 
-    newW = pg.SizeWidth / scaleRatio
-    newH = pg.SizeHeight / scaleRatio
+    If grp Is Nothing Then Exit Sub
+
+    scaleFactor = 1# / scaleRatio
+
+    ' Scale around the actual page center, not Document.ReferencePoint.
+    anchorX = pg.CenterX
+    anchorY = pg.CenterY
+
+    grp.StretchEx anchorX, anchorY, scaleFactor, scaleFactor
+
+    newW = oldW * scaleFactor
+    newH = oldH * scaleFactor
+
     pg.SetSize newW, newH
-    grp.CenterX = newW / 2#
-    grp.CenterY = newH / 2#
+
+    ' SetSize can change page coordinates. Re-center after resizing.
+    grp.CenterX = pg.CenterX
+    grp.CenterY = pg.CenterY
 End Sub
 
 Private Sub CPT_SetupPDFSettings(ByVal doc As Document)
     On Error Resume Next
-    With doc.PDFSettings
-        .EmbedFonts = False
-        .TextAsCurves = False
-    End With
+
+    ' Publish the complete temporary document. Each-page exports already use a
+    ' temporary one-page document, while all-pages exports contain all pages.
+    doc.PDFSettings.PublishRange = pdfWholeDocument
+
+    doc.PDFSettings.EmbedFonts = False
+    doc.PDFSettings.TextAsCurves = False
+
+    ' IMPORTANT:
+    ' Do NOT set UsePageBoundingBox here.
+    ' The previous fix enabled that property and produced blank PDFs in this
+    ' workflow. The macro now physically prepares the real CorelDRAW page
+    ' (grouped, fitted, centered and scaled), so PublishToPDF can use the
+    ' prepared page normally.
     On Error GoTo 0
 End Sub
 
@@ -1686,9 +1805,9 @@ Private Function CPT_ResolvePageName( _
 
         Case cptNameCustom
             If doc.Pages.Count = 1 Then
-                value = opt.CustomName
+                value = opt.customName
             Else
-                value = opt.CustomName & "_" & Format$(pageIndex, "000")
+                value = opt.customName & "_" & Format$(pageIndex, "000")
             End If
 
         Case Else
@@ -1703,7 +1822,7 @@ Private Function CPT_ResolveAllPagesBaseName(ByVal doc As Document, ByRef opt As
 
     Select Case opt.NameMode
         Case cptNameCustom
-            value = opt.CustomName
+            value = opt.customName
         Case cptNamePage
             value = doc.ActivePage.Name
         Case cptNameExportField
@@ -1843,7 +1962,7 @@ Private Function CPT_ResolveUniqueBaseName( _
     Dim candidate As String
     Dim n As Long
 
-    If Not opt.EnsureUniqueNames Then
+    If Not opt.ensureUniqueNames Then
         CPT_ResolveUniqueBaseName = baseName
         Exit Function
     End If
@@ -1864,19 +1983,19 @@ Private Function CPT_BaseNameConflicts( _
     ByVal baseName As String, _
     ByRef opt As CPTExportOptions) As Boolean
 
-    If opt.ExportCurrentCDR Then
+    If opt.exportCurrentCDR Then
         If CPT_FileExists(folderPath & baseName & ".cdr") Then CPT_BaseNameConflicts = True: Exit Function
     End If
-    If opt.ExportV15CDR Then
+    If opt.exportV15CDR Then
         If CPT_FileExists(folderPath & baseName & V15_SUFFIX & ".cdr") Then CPT_BaseNameConflicts = True: Exit Function
     End If
-    If opt.ExportCurvesCurrentCDR Then
+    If opt.exportCurvesCurrentCDR Then
         If CPT_FileExists(folderPath & baseName & CURVES_SUFFIX & ".cdr") Then CPT_BaseNameConflicts = True: Exit Function
     End If
-    If opt.ExportCurvesV15CDR Then
+    If opt.exportCurvesV15CDR Then
         If CPT_FileExists(folderPath & baseName & CURVES_SUFFIX & V15_SUFFIX & ".cdr") Then CPT_BaseNameConflicts = True: Exit Function
     End If
-    If opt.ExportCurvesPDF Then
+    If opt.exportCurvesPDF Then
         If CPT_FileExists(folderPath & baseName & CURVES_SUFFIX & ".pdf") Then CPT_BaseNameConflicts = True: Exit Function
     End If
 End Function
@@ -1897,9 +2016,9 @@ Public Sub CPT_AddWidthHeightDimensions()
     End If
 
     CPT_SetDefaultDimensionOptions dimOpt
-    dimOpt.Mode = cptDimensionPermanentSource
+    dimOpt.mode = cptDimensionPermanentSource
     If Not CPT_PromptDimensionOptions(dimOpt, False) Then Exit Sub
-    If Not CPT_CaptureSelectionSpecs(ActiveSelectionRange, dimOpt.TargetMode, specs, specCount) Then Exit Sub
+    If Not CPT_CaptureSelectionSpecs(ActiveSelectionRange, dimOpt.targetMode, specs, specCount) Then Exit Sub
 
     If dimOpt.RemoveOldDimensions Then CPT_RemoveDimensionLayerContents ActiveDocument.ActivePage
     Set createdGroup = CPT_CreateDimensionsFromSpecs(ActiveDocument.ActivePage, dimOpt, specs, specCount)
@@ -1915,17 +2034,17 @@ End Sub
 
 Private Sub CPT_SetDefaultDimensionOptions(ByRef dimOpt As CPTDimensionOptions)
     dimOpt.Enabled = True
-    dimOpt.TargetMode = cptDimensionEachObject
+    dimOpt.targetMode = cptDimensionEachObject
     dimOpt.Axes = cptDimensionWidthAndHeight
-    dimOpt.Mode = cptDimensionExportCopiesOnly
-    dimOpt.UnitText = "cm"
-    dimOpt.Decimals = 2
-    dimOpt.FontName = "Arial"
-    dimOpt.FontSizePt = 10#
-    dimOpt.LineOffsetMM = 5#
+    dimOpt.mode = cptDimensionExportCopiesOnly
+    dimOpt.unitText = "cm"
+    dimOpt.decimals = 2
+    dimOpt.fontName = "Arial"
+    dimOpt.fontSizePt = 10#
+    dimOpt.lineOffsetMM = 5#
     dimOpt.IncludeInPageFit = True
     dimOpt.RemoveOldDimensions = False
-    dimOpt.GroupCreated = True
+    dimOpt.groupCreated = True
     dimOpt.ColorR = 0
     dimOpt.ColorG = 0
     dimOpt.ColorB = 255
@@ -1939,12 +2058,12 @@ Private Function CPT_PromptDimensionOptions(ByRef dimOpt As CPTDimensionOptions,
         "Dimension target:" & vbCrLf & _
         "1 = Complete selection as one measurement" & vbCrLf & _
         "2 = Every selected object separately", _
-        "Dimension Options", CStr(dimOpt.TargetMode)))
+        "Dimension Options", CStr(dimOpt.targetMode)))
     If Len(value) = 0 Then Exit Function
     If value = "1" Then
-        dimOpt.TargetMode = cptDimensionCompleteSelection
+        dimOpt.targetMode = cptDimensionCompleteSelection
     ElseIf value = "2" Then
-        dimOpt.TargetMode = cptDimensionEachObject
+        dimOpt.targetMode = cptDimensionEachObject
     Else
         MsgBox "Invalid dimension target.", vbExclamation
         Exit Function
@@ -1964,32 +2083,32 @@ Private Function CPT_PromptDimensionOptions(ByRef dimOpt As CPTDimensionOptions,
         Case Else: MsgBox "Invalid measurement option.", vbExclamation: Exit Function
     End Select
 
-    value = LCase$(Trim$(InputBox("Display unit: mm, cm, or in", "Dimension Options", dimOpt.UnitText)))
+    value = LCase$(Trim$(InputBox("Display unit: mm, cm, or in", "Dimension Options", dimOpt.unitText)))
     If Len(value) = 0 Then Exit Function
     If value <> "mm" And value <> "cm" And value <> "in" Then
         MsgBox "Unit must be mm, cm, or in.", vbExclamation
         Exit Function
     End If
-    dimOpt.UnitText = value
+    dimOpt.unitText = value
 
-    value = Trim$(InputBox("Number of decimal places (0 to 4):", "Dimension Options", CStr(dimOpt.Decimals)))
+    value = Trim$(InputBox("Number of decimal places (0 to 4):", "Dimension Options", CStr(dimOpt.decimals)))
     If Len(value) = 0 Or Not IsNumeric(value) Then Exit Function
-    dimOpt.Decimals = CLng(value)
-    If dimOpt.Decimals < 0 Then dimOpt.Decimals = 0
-    If dimOpt.Decimals > 4 Then dimOpt.Decimals = 4
+    dimOpt.decimals = CLng(value)
+    If dimOpt.decimals < 0 Then dimOpt.decimals = 0
+    If dimOpt.decimals > 4 Then dimOpt.decimals = 4
 
-    dimOpt.FontName = Trim$(InputBox("Dimension font name:", "Dimension Options", dimOpt.FontName))
-    If Len(dimOpt.FontName) = 0 Then Exit Function
+    dimOpt.fontName = Trim$(InputBox("Dimension font name:", "Dimension Options", dimOpt.fontName))
+    If Len(dimOpt.fontName) = 0 Then Exit Function
 
-    value = Trim$(InputBox("Dimension text size in points:", "Dimension Options", CStr(dimOpt.FontSizePt)))
+    value = Trim$(InputBox("Dimension text size in points:", "Dimension Options", CStr(dimOpt.fontSizePt)))
     If Len(value) = 0 Or Not IsNumeric(value) Then Exit Function
-    dimOpt.FontSizePt = CDbl(value)
-    If dimOpt.FontSizePt < 1# Then dimOpt.FontSizePt = 10#
+    dimOpt.fontSizePt = CDbl(value)
+    If dimOpt.fontSizePt < 1# Then dimOpt.fontSizePt = 10#
 
-    value = Trim$(InputBox("Object-to-dimension-line distance in millimetres:", "Dimension Options", CStr(dimOpt.LineOffsetMM)))
+    value = Trim$(InputBox("Object-to-dimension-line distance in millimetres:", "Dimension Options", CStr(dimOpt.lineOffsetMM)))
     If Len(value) = 0 Or Not IsNumeric(value) Then Exit Function
-    dimOpt.LineOffsetMM = CDbl(value)
-    If dimOpt.LineOffsetMM <= 0# Then dimOpt.LineOffsetMM = 5#
+    dimOpt.lineOffsetMM = CDbl(value)
+    If dimOpt.lineOffsetMM <= 0# Then dimOpt.lineOffsetMM = 5#
 
     ans = MsgBox("Include generated dimensions when calculating fitted page size?", vbYesNoCancel + vbQuestion, "Dimension Options")
     If ans = vbCancel Then Exit Function
@@ -2005,12 +2124,12 @@ Private Function CPT_PromptDimensionOptions(ByRef dimOpt As CPTDimensionOptions,
             "1 = Add permanently to source document" & vbCrLf & _
             "2 = Add temporarily, export, then remove" & vbCrLf & _
             "3 = Add only inside export copies", _
-            "Dimension Options", CStr(dimOpt.Mode)))
+            "Dimension Options", CStr(dimOpt.mode)))
         If Len(value) = 0 Then Exit Function
         Select Case value
-            Case "1": dimOpt.Mode = cptDimensionPermanentSource
-            Case "2": dimOpt.Mode = cptDimensionTemporarySource
-            Case "3": dimOpt.Mode = cptDimensionExportCopiesOnly
+            Case "1": dimOpt.mode = cptDimensionPermanentSource
+            Case "2": dimOpt.mode = cptDimensionTemporarySource
+            Case "3": dimOpt.mode = cptDimensionExportCopiesOnly
             Case Else: MsgBox "Invalid dimension placement.", vbExclamation: Exit Function
         End Select
     End If
@@ -2040,12 +2159,12 @@ Private Function CPT_CaptureSelectionSpecs( _
     If targetMode = cptDimensionCompleteSelection Then
         specCount = 1
         ReDim specs(1 To 1)
-        sr.GetBoundingBox specs(1).X, specs(1).Y, specs(1).W, specs(1).H, False
+        sr.GetBoundingBox specs(1).x, specs(1).y, specs(1).w, specs(1).h, False
     Else
         specCount = sr.Count
         ReDim specs(1 To specCount)
         For i = 1 To specCount
-            sr(i).GetBoundingBox specs(i).X, specs(i).Y, specs(i).W, specs(i).H, False
+            sr(i).GetBoundingBox specs(i).x, specs(i).y, specs(i).w, specs(i).h, False
         Next i
     End If
 
@@ -2080,7 +2199,7 @@ Private Function CPT_CreateDimensionsFromSpecs( _
     If specCount <= 0 Then Exit Function
     ' Page.Parent is the Pages collection; Pages.Parent is the owning Document.
     ' Assigning Page.Parent directly to Document raises VBA Run-time error 13.
-    Set doc = pg.Parent.Parent
+    Set doc = pg.parent.parent
     oldUnit = doc.Unit
 
     On Error GoTo DimensionFail
@@ -2098,7 +2217,7 @@ Private Function CPT_CreateDimensionsFromSpecs( _
     Next i
 
     If ActiveSelectionRange.Count > 0 Then
-        If dimOpt.GroupCreated And ActiveSelectionRange.Count > 1 Then
+        If dimOpt.groupCreated And ActiveSelectionRange.Count > 1 Then
             Set master = ActiveSelectionRange.Group
             master.Name = prefix & "GROUP"
             master.CreateSelection
@@ -2139,40 +2258,40 @@ Private Sub CPT_CreateDimensionsForBox( _
     Dim value As Double
     Dim s As Shape
 
-    lineOffsetMM = dimOpt.LineOffsetMM
+    lineOffsetMM = dimOpt.lineOffsetMM
     textOffsetMM = lineOffsetMM * 2#
     extensionMM = 1.5
-    dimY = box.Y - lineOffsetMM
-    txtY = box.Y - textOffsetMM
-    dimX = box.X - lineOffsetMM
-    txtX = box.X - textOffsetMM
+    dimY = box.y - lineOffsetMM
+    txtY = box.y - textOffsetMM
+    dimX = box.x - lineOffsetMM
+    txtX = box.x - textOffsetMM
 
     If dimOpt.Axes = cptDimensionWidthOnly Or dimOpt.Axes = cptDimensionWidthAndHeight Then
-        Set s = lyr.CreateLineSegment(box.X, box.Y, box.X, dimY - extensionMM)
+        Set s = lyr.CreateLineSegment(box.x, box.y, box.x, dimY - extensionMM)
         CPT_NameAndSelectDimensionShape s, shapePrefix & "_W1", False, dimOpt
-        Set s = lyr.CreateLineSegment(box.X + box.W, box.Y, box.X + box.W, dimY - extensionMM)
+        Set s = lyr.CreateLineSegment(box.x + box.w, box.y, box.x + box.w, dimY - extensionMM)
         CPT_NameAndSelectDimensionShape s, shapePrefix & "_W2", False, dimOpt
-        Set s = lyr.CreateLineSegment(box.X, dimY, box.X + box.W, dimY)
+        Set s = lyr.CreateLineSegment(box.x, dimY, box.x + box.w, dimY)
         CPT_NameAndSelectDimensionShape s, shapePrefix & "_WL", False, dimOpt
 
-        value = CPT_ConvertMMToDisplayUnit(box.W, dimOpt.UnitText)
-        Set s = lyr.CreateArtisticText(box.X + (box.W / 2#), txtY, CPT_FormatMeasurement(value, dimOpt.Decimals) & " " & dimOpt.UnitText)
-        s.CenterX = box.X + (box.W / 2#)
+        value = CPT_ConvertMMToDisplayUnit(box.w, dimOpt.unitText)
+        Set s = lyr.CreateArtisticText(box.x + (box.w / 2#), txtY, CPT_FormatMeasurement(value, dimOpt.decimals) & " " & dimOpt.unitText)
+        s.CenterX = box.x + (box.w / 2#)
         CPT_NameAndSelectDimensionShape s, shapePrefix & "_WT", True, dimOpt
     End If
 
     If dimOpt.Axes = cptDimensionHeightOnly Or dimOpt.Axes = cptDimensionWidthAndHeight Then
-        Set s = lyr.CreateLineSegment(box.X, box.Y, dimX - extensionMM, box.Y)
+        Set s = lyr.CreateLineSegment(box.x, box.y, dimX - extensionMM, box.y)
         CPT_NameAndSelectDimensionShape s, shapePrefix & "_H1", False, dimOpt
-        Set s = lyr.CreateLineSegment(box.X, box.Y + box.H, dimX - extensionMM, box.Y + box.H)
+        Set s = lyr.CreateLineSegment(box.x, box.y + box.h, dimX - extensionMM, box.y + box.h)
         CPT_NameAndSelectDimensionShape s, shapePrefix & "_H2", False, dimOpt
-        Set s = lyr.CreateLineSegment(dimX, box.Y, dimX, box.Y + box.H)
+        Set s = lyr.CreateLineSegment(dimX, box.y, dimX, box.y + box.h)
         CPT_NameAndSelectDimensionShape s, shapePrefix & "_HL", False, dimOpt
 
-        value = CPT_ConvertMMToDisplayUnit(box.H, dimOpt.UnitText)
-        Set s = lyr.CreateArtisticText(txtX, box.Y + (box.H / 2#), CPT_FormatMeasurement(value, dimOpt.Decimals) & " " & dimOpt.UnitText)
+        value = CPT_ConvertMMToDisplayUnit(box.h, dimOpt.unitText)
+        Set s = lyr.CreateArtisticText(txtX, box.y + (box.h / 2#), CPT_FormatMeasurement(value, dimOpt.decimals) & " " & dimOpt.unitText)
         s.RotationAngle = 90#
-        s.CenterY = box.Y + (box.H / 2#)
+        s.CenterY = box.y + (box.h / 2#)
         CPT_NameAndSelectDimensionShape s, shapePrefix & "_HT", True, dimOpt
     End If
 End Sub
@@ -2224,8 +2343,8 @@ End Sub
 Private Sub CPT_SetDimensionTextStyle(ByVal s As Shape, ByRef dimOpt As CPTDimensionOptions)
     On Error Resume Next
     s.Outline.Width = 0
-    s.Text.Story.Size = dimOpt.FontSizePt
-    s.Text.Story.Font = dimOpt.FontName
+    s.Text.Story.Size = dimOpt.fontSizePt
+    s.Text.Story.Font = dimOpt.fontName
     If Err.Number <> 0 Then
         Err.Clear
         s.Text.Story.Font = "Arial"
@@ -2344,38 +2463,38 @@ Private Sub CPT_LoadBuiltInProfile(ByVal profileNumber As Long, ByRef profile As
         Case 1
             profile.Name = "Dimensions + 5 Formats"
             profile.DimensionOptions.Enabled = True
-            profile.DimensionOptions.TargetMode = cptDimensionEachObject
+            profile.DimensionOptions.targetMode = cptDimensionEachObject
             profile.DimensionOptions.Axes = cptDimensionWidthAndHeight
-            profile.DimensionOptions.Mode = cptDimensionExportCopiesOnly
+            profile.DimensionOptions.mode = cptDimensionExportCopiesOnly
             profile.DimensionOptions.IncludeInPageFit = True
 
             With profile.ExportOptions
                 .Scope = cptScopeEachPage
                 .NameMode = cptNameExportField
-                .ExportCurrentCDR = True
-                .ExportV15CDR = True
-                .ExportCurvesCurrentCDR = True
-                .ExportCurvesV15CDR = True
-                .ExportCurvesPDF = True
+                .exportCurrentCDR = True
+                .exportV15CDR = True
+                .exportCurvesCurrentCDR = True
+                .exportCurvesV15CDR = True
+                .exportCurvesPDF = True
                 .FitPageToArtwork = True
                 .CDRPageMode = cptCDRFitCustomMargin
-                .MarginMM = DEFAULT_MARGIN_MM
+                .marginMM = DEFAULT_MARGIN_MM
                 .PDFPageMode = cptPDFFitCustomMargin
-                .PDFMarginMM = DEFAULT_MARGIN_MM
+                .pdfMarginMM = DEFAULT_MARGIN_MM
             End With
 
         Case 2
             profile.Name = "Dimensions + PDF Only"
             profile.DimensionOptions.Enabled = True
-            profile.DimensionOptions.TargetMode = cptDimensionEachObject
+            profile.DimensionOptions.targetMode = cptDimensionEachObject
             profile.DimensionOptions.Axes = cptDimensionWidthAndHeight
-            profile.DimensionOptions.Mode = cptDimensionExportCopiesOnly
+            profile.DimensionOptions.mode = cptDimensionExportCopiesOnly
             profile.DimensionOptions.IncludeInPageFit = True
 
             With profile.ExportOptions
                 .Scope = cptScopeCurrentPage
                 .NameMode = cptNameExportField
-                .ExportCurvesPDF = True
+                .exportCurvesPDF = True
                 .PDFPageMode = cptPDFFitNoMargin
             End With
 
@@ -2385,16 +2504,16 @@ Private Sub CPT_LoadBuiltInProfile(ByVal profileNumber As Long, ByRef profile As
             With profile.ExportOptions
                 .Scope = cptScopeEachPage
                 .NameMode = cptNameExportField
-                .ExportCurrentCDR = True
-                .ExportV15CDR = True
-                .ExportCurvesCurrentCDR = True
-                .ExportCurvesV15CDR = True
-                .ExportCurvesPDF = True
+                .exportCurrentCDR = True
+                .exportV15CDR = True
+                .exportCurvesCurrentCDR = True
+                .exportCurvesV15CDR = True
+                .exportCurvesPDF = True
                 .FitPageToArtwork = True
                 .CDRPageMode = cptCDRFitCustomMargin
-                .MarginMM = DEFAULT_MARGIN_MM
+                .marginMM = DEFAULT_MARGIN_MM
                 .PDFPageMode = cptPDFFitCustomMargin
-                .PDFMarginMM = DEFAULT_MARGIN_MM
+                .pdfMarginMM = DEFAULT_MARGIN_MM
             End With
 
         Case 4
@@ -2403,7 +2522,7 @@ Private Sub CPT_LoadBuiltInProfile(ByVal profileNumber As Long, ByRef profile As
             With profile.ExportOptions
                 .Scope = cptScopeCurrentPage
                 .NameMode = cptNameExportField
-                .ExportCurvesPDF = True
+                .exportCurvesPDF = True
                 .PDFPageMode = cptPDFFitNoMargin
             End With
 
@@ -2413,11 +2532,11 @@ Private Sub CPT_LoadBuiltInProfile(ByVal profileNumber As Long, ByRef profile As
             With profile.ExportOptions
                 .Scope = cptScopeAllPages
                 .NameMode = cptNameDocument
-                .ExportCurrentCDR = True
-                .ExportV15CDR = True
-                .ExportCurvesCurrentCDR = True
-                .ExportCurvesV15CDR = True
-                .ExportCurvesPDF = True
+                .exportCurrentCDR = True
+                .exportV15CDR = True
+                .exportCurvesCurrentCDR = True
+                .exportCurvesV15CDR = True
+                .exportCurvesPDF = True
                 .FitPageToArtwork = False
                 .CDRPageMode = cptCDRKeepOriginalPage
                 .PDFPageMode = cptPDFKeepOriginalPage
@@ -2445,11 +2564,11 @@ Private Function CPT_BuildCustomProfile(ByRef profile As CPTWorkflowProfile) As 
     End If
 
     ' Start custom profiles with the common five-format production selection.
-    profile.ExportOptions.ExportCurrentCDR = True
-    profile.ExportOptions.ExportV15CDR = True
-    profile.ExportOptions.ExportCurvesCurrentCDR = True
-    profile.ExportOptions.ExportCurvesV15CDR = True
-    profile.ExportOptions.ExportCurvesPDF = True
+    profile.ExportOptions.exportCurrentCDR = True
+    profile.ExportOptions.exportV15CDR = True
+    profile.ExportOptions.exportCurvesCurrentCDR = True
+    profile.ExportOptions.exportCurvesV15CDR = True
+    profile.ExportOptions.exportCurvesPDF = True
     profile.ExportOptions.FitPageToArtwork = True
     profile.ExportOptions.CDRPageMode = cptCDRFitCustomMargin
     profile.ExportOptions.PDFPageMode = cptPDFFitCustomMargin
@@ -2477,12 +2596,12 @@ Private Sub CPT_ExecuteWorkflowProfile(ByRef profile As CPTWorkflowProfile)
         End If
         Set originalSelection = ActiveSelectionRange
         Set sourcePage = ActiveDocument.ActivePage
-        If Not CPT_CaptureSelectionSpecs(originalSelection, profile.DimensionOptions.TargetMode, specs, specCount) Then Exit Sub
+        If Not CPT_CaptureSelectionSpecs(originalSelection, profile.DimensionOptions.targetMode, specs, specCount) Then Exit Sub
     End If
 
-    If Len(profile.ExportOptions.OutputFolder) = 0 Or Not CPT_FolderExists(CPT_NormalizeFolder(profile.ExportOptions.OutputFolder)) Then
-        profile.ExportOptions.OutputFolder = CPT_GetFolderFromUser("Choose output folder for " & profile.Name)
-        If Len(profile.ExportOptions.OutputFolder) = 0 Then Exit Sub
+    If Len(profile.ExportOptions.outputFolder) = 0 Or Not CPT_FolderExists(CPT_NormalizeFolder(profile.ExportOptions.outputFolder)) Then
+        profile.ExportOptions.outputFolder = CPT_GetFolderFromUser("Choose output folder for " & profile.Name)
+        If Len(profile.ExportOptions.outputFolder) = 0 Then Exit Sub
     End If
 
     ans = MsgBox(CPT_ProfileSummary(profile) & vbCrLf & vbCrLf & "Run this workflow now?", _
@@ -2498,7 +2617,7 @@ Private Sub CPT_ExecuteWorkflowProfile(ByRef profile As CPTWorkflowProfile)
         gWorkflowDimensionSourcePage = sourcePage.Index
         CPT_CopySpecsToWorkflow specs, specCount
 
-        Select Case profile.DimensionOptions.Mode
+        Select Case profile.DimensionOptions.mode
             Case cptDimensionPermanentSource
                 If profile.DimensionOptions.RemoveOldDimensions Then CPT_RemoveDimensionLayerContents sourcePage
                 Set sourceDimensionGroup = CPT_CreateDimensionsFromSpecs(sourcePage, profile.DimensionOptions, specs, specCount)
@@ -2522,7 +2641,7 @@ WorkflowFail:
 WorkflowCleanup:
     On Error Resume Next
     If profile.DimensionOptions.Enabled Then
-        If profile.DimensionOptions.Mode = cptDimensionTemporarySource Then
+        If profile.DimensionOptions.mode = cptDimensionTemporarySource Then
             If Not sourceDimensionGroup Is Nothing Then sourceDimensionGroup.Delete
         End If
         If Not originalSelection Is Nothing Then originalSelection.CreateSelection
@@ -2537,14 +2656,14 @@ End Sub
 
 Private Sub CPT_CopyDimensionOptions(ByRef source As CPTDimensionOptions, ByRef target As CPTDimensionOptions)
     target.Enabled = source.Enabled
-    target.TargetMode = source.TargetMode
+    target.targetMode = source.targetMode
     target.Axes = source.Axes
-    target.Mode = source.Mode
-    target.UnitText = source.UnitText
-    target.Decimals = source.Decimals
-    target.FontName = source.FontName
-    target.FontSizePt = source.FontSizePt
-    target.LineOffsetMM = source.LineOffsetMM
+    target.mode = source.mode
+    target.unitText = source.unitText
+    target.decimals = source.decimals
+    target.fontName = source.fontName
+    target.fontSizePt = source.fontSizePt
+    target.lineOffsetMM = source.lineOffsetMM
     target.IncludeInPageFit = source.IncludeInPageFit
     target.RemoveOldDimensions = source.RemoveOldDimensions
 End Sub
@@ -2556,10 +2675,10 @@ Private Sub CPT_CopySpecsToWorkflow(ByRef specs() As CPTBoundingBox, ByVal specC
     If specCount <= 0 Then Exit Sub
     ReDim gWorkflowDimensionSpecs(1 To specCount)
     For i = 1 To specCount
-        gWorkflowDimensionSpecs(i).X = specs(i).X
-        gWorkflowDimensionSpecs(i).Y = specs(i).Y
-        gWorkflowDimensionSpecs(i).W = specs(i).W
-        gWorkflowDimensionSpecs(i).H = specs(i).H
+        gWorkflowDimensionSpecs(i).x = specs(i).x
+        gWorkflowDimensionSpecs(i).y = specs(i).y
+        gWorkflowDimensionSpecs(i).w = specs(i).w
+        gWorkflowDimensionSpecs(i).h = specs(i).h
     Next i
 End Sub
 
@@ -2588,7 +2707,7 @@ Private Sub CPT_ApplyWorkflowDimensionsToTempPage(ByVal pg As Page, ByVal source
 
     If Not gWorkflowActive Then Exit Sub
     If Not gWorkflowDimensionOptions.Enabled Then Exit Sub
-    If gWorkflowDimensionOptions.Mode <> cptDimensionExportCopiesOnly Then Exit Sub
+    If gWorkflowDimensionOptions.mode <> cptDimensionExportCopiesOnly Then Exit Sub
     If sourcePageIndex <> gWorkflowDimensionSourcePage Then Exit Sub
     If gWorkflowDimensionSpecCount <= 0 Then Exit Sub
 
@@ -2599,7 +2718,7 @@ End Sub
 Private Sub CPT_ApplyWorkflowDimensionsToDocument(ByVal doc As Document)
     If Not gWorkflowActive Then Exit Sub
     If Not gWorkflowDimensionOptions.Enabled Then Exit Sub
-    If gWorkflowDimensionOptions.Mode <> cptDimensionExportCopiesOnly Then Exit Sub
+    If gWorkflowDimensionOptions.mode <> cptDimensionExportCopiesOnly Then Exit Sub
     If gWorkflowDimensionSourcePage < 1 Or gWorkflowDimensionSourcePage > doc.Pages.Count Then Exit Sub
 
     CPT_ApplyWorkflowDimensionsToTempPage doc.Pages(gWorkflowDimensionSourcePage), gWorkflowDimensionSourcePage
@@ -2640,23 +2759,23 @@ Private Function CPT_PromptExportOptions(ByRef opt As CPTExportOptions, ByVal di
         Case "3": opt.NameMode = cptNamePage
         Case "4"
             opt.NameMode = cptNameCustom
-            opt.CustomName = Trim$(InputBox("Enter the custom filename or prefix:", dialogTitle & " - Prefix", opt.CustomName))
-            If Len(opt.CustomName) = 0 Then Exit Function
+            opt.customName = Trim$(InputBox("Enter the custom filename or prefix:", dialogTitle & " - Prefix", opt.customName))
+            If Len(opt.customName) = 0 Then Exit Function
         Case Else: MsgBox "Invalid filename source.", vbExclamation: Exit Function
     End Select
 
-    opt.ExportCurrentCDR = (MsgBox("Export normal current-version CDR?", vbYesNo + vbQuestion, dialogTitle & " - Format 1") = vbYes)
-    opt.ExportV15CDR = (MsgBox("Export normal version-15 CDR?", vbYesNo + vbQuestion, dialogTitle & " - Format 2") = vbYes)
-    opt.ExportCurvesCurrentCDR = (MsgBox("Export curved current-version CDR?", vbYesNo + vbQuestion, dialogTitle & " - Format 3") = vbYes)
-    opt.ExportCurvesV15CDR = (MsgBox("Export curved version-15 CDR?", vbYesNo + vbQuestion, dialogTitle & " - Format 4") = vbYes)
-    opt.ExportCurvesPDF = (MsgBox("Export curved PDF?", vbYesNo + vbQuestion, dialogTitle & " - Format 5") = vbYes)
+    opt.exportCurrentCDR = (MsgBox("Export normal current-version CDR?", vbYesNo + vbQuestion, dialogTitle & " - Format 1") = vbYes)
+    opt.exportV15CDR = (MsgBox("Export normal version-15 CDR?", vbYesNo + vbQuestion, dialogTitle & " - Format 2") = vbYes)
+    opt.exportCurvesCurrentCDR = (MsgBox("Export curved current-version CDR?", vbYesNo + vbQuestion, dialogTitle & " - Format 3") = vbYes)
+    opt.exportCurvesV15CDR = (MsgBox("Export curved version-15 CDR?", vbYesNo + vbQuestion, dialogTitle & " - Format 4") = vbYes)
+    opt.exportCurvesPDF = (MsgBox("Export curved PDF?", vbYesNo + vbQuestion, dialogTitle & " - Format 5") = vbYes)
 
     If Not CPT_AnyFormatSelected(opt) Then
         MsgBox "No output format was selected.", vbExclamation
         Exit Function
     End If
 
-    If opt.ExportCurrentCDR Or opt.ExportV15CDR Or opt.ExportCurvesCurrentCDR Or opt.ExportCurvesV15CDR Then
+    If opt.exportCurrentCDR Or opt.exportV15CDR Or opt.exportCurvesCurrentCDR Or opt.exportCurvesV15CDR Then
         value = Trim$(InputBox( _
             "CDR page mode:" & vbCrLf & _
             "1 = Preserve source page exactly" & vbCrLf & _
@@ -2668,22 +2787,22 @@ Private Function CPT_PromptExportOptions(ByRef opt As CPTExportOptions, ByVal di
         If Len(value) = 0 Then Exit Function
         Select Case value
             Case "1": opt.CDRPageMode = cptCDRKeepOriginalPage
-            Case "2": opt.CDRPageMode = cptCDRFitNoMargin: opt.MarginMM = 0#
+            Case "2": opt.CDRPageMode = cptCDRFitNoMargin: opt.marginMM = 0#
             Case "3"
                 opt.CDRPageMode = cptCDRFitCustomMargin
-                value = Trim$(InputBox("CDR margin on all four sides in millimetres:", dialogTitle & " - CDR Margin", CStr(opt.MarginMM)))
+                value = Trim$(InputBox("CDR margin on all four sides in millimetres:", dialogTitle & " - CDR Margin", CStr(opt.marginMM)))
                 If Len(value) = 0 Or Not IsNumeric(value) Then Exit Function
-                opt.MarginMM = CDbl(value)
-                If opt.MarginMM < 0# Then opt.MarginMM = 0#
+                opt.marginMM = CDbl(value)
+                If opt.marginMM < 0# Then opt.marginMM = 0#
             Case "4", "5"
                 If value = "4" Then opt.CDRPageMode = cptCDRCustomKeepPositions Else opt.CDRPageMode = cptCDRCustomCenterObjects
-                value = Trim$(InputBox("Custom CDR page width in millimetres:", dialogTitle & " - CDR Width", CStr(opt.CDRCustomWidthMM)))
+                value = Trim$(InputBox("Custom CDR page width in millimetres:", dialogTitle & " - CDR Width", CStr(opt.cdrCustomWidthMM)))
                 If Len(value) = 0 Or Not IsNumeric(value) Then Exit Function
-                opt.CDRCustomWidthMM = CDbl(value)
-                value = Trim$(InputBox("Custom CDR page height in millimetres:", dialogTitle & " - CDR Height", CStr(opt.CDRCustomHeightMM)))
+                opt.cdrCustomWidthMM = CDbl(value)
+                value = Trim$(InputBox("Custom CDR page height in millimetres:", dialogTitle & " - CDR Height", CStr(opt.cdrCustomHeightMM)))
                 If Len(value) = 0 Or Not IsNumeric(value) Then Exit Function
-                opt.CDRCustomHeightMM = CDbl(value)
-                If opt.CDRCustomWidthMM <= 0# Or opt.CDRCustomHeightMM <= 0# Then Exit Function
+                opt.cdrCustomHeightMM = CDbl(value)
+                If opt.cdrCustomWidthMM <= 0# Or opt.cdrCustomHeightMM <= 0# Then Exit Function
             Case Else: MsgBox "Invalid CDR page mode.", vbExclamation: Exit Function
         End Select
         opt.FitPageToArtwork = (opt.CDRPageMode = cptCDRFitNoMargin Or opt.CDRPageMode = cptCDRFitCustomMargin)
@@ -2692,7 +2811,7 @@ Private Function CPT_PromptExportOptions(ByRef opt As CPTExportOptions, ByVal di
         opt.CDRPageMode = cptCDRKeepOriginalPage
     End If
 
-    If opt.ExportCurvesPDF Then
+    If opt.exportCurvesPDF Then
         value = Trim$(InputBox( _
             "PDF page mode:" & vbCrLf & _
             "1 = Group all objects and fit page, no margin" & vbCrLf & _
@@ -2703,23 +2822,23 @@ Private Function CPT_PromptExportOptions(ByRef opt As CPTExportOptions, ByVal di
             dialogTitle & " - PDF Page", CStr(opt.PDFPageMode)))
         If Len(value) = 0 Then Exit Function
         Select Case value
-            Case "1": opt.PDFPageMode = cptPDFFitNoMargin: opt.PDFMarginMM = 0#
+            Case "1": opt.PDFPageMode = cptPDFFitNoMargin: opt.pdfMarginMM = 0#
             Case "2"
                 opt.PDFPageMode = cptPDFFitCustomMargin
-                value = Trim$(InputBox("PDF margin on all four sides in millimetres:", dialogTitle & " - PDF Margin", CStr(opt.PDFMarginMM)))
+                value = Trim$(InputBox("PDF margin on all four sides in millimetres:", dialogTitle & " - PDF Margin", CStr(opt.pdfMarginMM)))
                 If Len(value) = 0 Or Not IsNumeric(value) Then Exit Function
-                opt.PDFMarginMM = CDbl(value)
-                If opt.PDFMarginMM < 0# Then opt.PDFMarginMM = 0#
+                opt.pdfMarginMM = CDbl(value)
+                If opt.pdfMarginMM < 0# Then opt.pdfMarginMM = 0#
             Case "3": opt.PDFPageMode = cptPDFKeepOriginalPage
             Case "4", "5"
                 If value = "4" Then opt.PDFPageMode = cptPDFCustomKeepPositions Else opt.PDFPageMode = cptPDFCustomCenterObjects
-                value = Trim$(InputBox("Custom PDF page width in millimetres:", dialogTitle & " - PDF Width", CStr(opt.PDFCustomWidthMM)))
+                value = Trim$(InputBox("Custom PDF page width in millimetres:", dialogTitle & " - PDF Width", CStr(opt.pdfCustomWidthMM)))
                 If Len(value) = 0 Or Not IsNumeric(value) Then Exit Function
-                opt.PDFCustomWidthMM = CDbl(value)
-                value = Trim$(InputBox("Custom PDF page height in millimetres:", dialogTitle & " - PDF Height", CStr(opt.PDFCustomHeightMM)))
+                opt.pdfCustomWidthMM = CDbl(value)
+                value = Trim$(InputBox("Custom PDF page height in millimetres:", dialogTitle & " - PDF Height", CStr(opt.pdfCustomHeightMM)))
                 If Len(value) = 0 Or Not IsNumeric(value) Then Exit Function
-                opt.PDFCustomHeightMM = CDbl(value)
-                If opt.PDFCustomWidthMM <= 0# Or opt.PDFCustomHeightMM <= 0# Then Exit Function
+                opt.pdfCustomHeightMM = CDbl(value)
+                If opt.pdfCustomWidthMM <= 0# Or opt.pdfCustomHeightMM <= 0# Then Exit Function
             Case Else: MsgBox "Invalid PDF page mode.", vbExclamation: Exit Function
         End Select
 
@@ -2729,15 +2848,15 @@ Private Function CPT_PromptExportOptions(ByRef opt As CPTExportOptions, ByVal di
             "Curved CDR files always remain full size.", _
             vbYesNoCancel + vbQuestion, dialogTitle & " - Large PDF")
         If ans = vbCancel Then Exit Function
-        opt.AutoScaleLargePDF = (ans = vbYes)
+        opt.autoScaleLargePDF = (ans = vbYes)
     End If
 
     ans = MsgBox("Rename pages in the original source document?", vbYesNoCancel + vbQuestion, dialogTitle & " - Source Pages")
     If ans = vbCancel Then Exit Function
-    opt.RenameSourcePages = (ans = vbYes)
+    opt.renameSourcePages = (ans = vbYes)
 
-    opt.OutputFolder = CPT_GetFolderFromUser("Choose output folder for " & dialogTitle)
-    If Len(opt.OutputFolder) = 0 Then Exit Function
+    opt.outputFolder = CPT_GetFolderFromUser("Choose output folder for " & dialogTitle)
+    If Len(opt.outputFolder) = 0 Then Exit Function
 
     CPT_PromptExportOptions = True
 End Function
@@ -2754,38 +2873,38 @@ Private Sub CPT_SaveWorkflowProfile(ByRef profile As CPTWorkflowProfile)
     With profile.ExportOptions
         SaveSetting PROFILE_APP, section, "Scope", CStr(.Scope)
         SaveSetting PROFILE_APP, section, "NameMode", CStr(.NameMode)
-        SaveSetting PROFILE_APP, section, "CustomName", .CustomName
-        SaveSetting PROFILE_APP, section, "OutputFolder", .OutputFolder
-        SaveSetting PROFILE_APP, section, "ExportCurrentCDR", CPT_BoolText(.ExportCurrentCDR)
-        SaveSetting PROFILE_APP, section, "ExportV15CDR", CPT_BoolText(.ExportV15CDR)
-        SaveSetting PROFILE_APP, section, "ExportCurvesCurrentCDR", CPT_BoolText(.ExportCurvesCurrentCDR)
-        SaveSetting PROFILE_APP, section, "ExportCurvesV15CDR", CPT_BoolText(.ExportCurvesV15CDR)
-        SaveSetting PROFILE_APP, section, "ExportCurvesPDF", CPT_BoolText(.ExportCurvesPDF)
+        SaveSetting PROFILE_APP, section, "CustomName", .customName
+        SaveSetting PROFILE_APP, section, "OutputFolder", .outputFolder
+        SaveSetting PROFILE_APP, section, "ExportCurrentCDR", CPT_BoolText(.exportCurrentCDR)
+        SaveSetting PROFILE_APP, section, "ExportV15CDR", CPT_BoolText(.exportV15CDR)
+        SaveSetting PROFILE_APP, section, "ExportCurvesCurrentCDR", CPT_BoolText(.exportCurvesCurrentCDR)
+        SaveSetting PROFILE_APP, section, "ExportCurvesV15CDR", CPT_BoolText(.exportCurvesV15CDR)
+        SaveSetting PROFILE_APP, section, "ExportCurvesPDF", CPT_BoolText(.exportCurvesPDF)
         SaveSetting PROFILE_APP, section, "FitPageToArtwork", CPT_BoolText(.FitPageToArtwork)
-        SaveSetting PROFILE_APP, section, "IncludeOutlines", CPT_BoolText(.IncludeOutlines)
-        SaveSetting PROFILE_APP, section, "MarginMM", CStr(.MarginMM)
+        SaveSetting PROFILE_APP, section, "IncludeOutlines", CPT_BoolText(.includeOutlines)
+        SaveSetting PROFILE_APP, section, "MarginMM", CStr(.marginMM)
         SaveSetting PROFILE_APP, section, "CDRPageMode", CStr(.CDRPageMode)
-        SaveSetting PROFILE_APP, section, "CDRCustomWidthMM", CStr(.CDRCustomWidthMM)
-        SaveSetting PROFILE_APP, section, "CDRCustomHeightMM", CStr(.CDRCustomHeightMM)
+        SaveSetting PROFILE_APP, section, "CDRCustomWidthMM", CStr(.cdrCustomWidthMM)
+        SaveSetting PROFILE_APP, section, "CDRCustomHeightMM", CStr(.cdrCustomHeightMM)
         SaveSetting PROFILE_APP, section, "PDFPageMode", CStr(.PDFPageMode)
-        SaveSetting PROFILE_APP, section, "PDFMarginMM", CStr(.PDFMarginMM)
-        SaveSetting PROFILE_APP, section, "PDFCustomWidthMM", CStr(.PDFCustomWidthMM)
-        SaveSetting PROFILE_APP, section, "PDFCustomHeightMM", CStr(.PDFCustomHeightMM)
-        SaveSetting PROFILE_APP, section, "RenameSourcePages", CPT_BoolText(.RenameSourcePages)
-        SaveSetting PROFILE_APP, section, "AutoScaleLargePDF", CPT_BoolText(.AutoScaleLargePDF)
-        SaveSetting PROFILE_APP, section, "EnsureUniqueNames", CPT_BoolText(.EnsureUniqueNames)
+        SaveSetting PROFILE_APP, section, "PDFMarginMM", CStr(.pdfMarginMM)
+        SaveSetting PROFILE_APP, section, "PDFCustomWidthMM", CStr(.pdfCustomWidthMM)
+        SaveSetting PROFILE_APP, section, "PDFCustomHeightMM", CStr(.pdfCustomHeightMM)
+        SaveSetting PROFILE_APP, section, "RenameSourcePages", CPT_BoolText(.renameSourcePages)
+        SaveSetting PROFILE_APP, section, "AutoScaleLargePDF", CPT_BoolText(.autoScaleLargePDF)
+        SaveSetting PROFILE_APP, section, "EnsureUniqueNames", CPT_BoolText(.ensureUniqueNames)
     End With
 
     With profile.DimensionOptions
         SaveSetting PROFILE_APP, section, "DimensionEnabled", CPT_BoolText(.Enabled)
-        SaveSetting PROFILE_APP, section, "DimensionTarget", CStr(.TargetMode)
+        SaveSetting PROFILE_APP, section, "DimensionTarget", CStr(.targetMode)
         SaveSetting PROFILE_APP, section, "DimensionAxes", CStr(.Axes)
-        SaveSetting PROFILE_APP, section, "DimensionMode", CStr(.Mode)
-        SaveSetting PROFILE_APP, section, "DimensionUnit", .UnitText
-        SaveSetting PROFILE_APP, section, "DimensionDecimals", CStr(.Decimals)
-        SaveSetting PROFILE_APP, section, "DimensionFont", .FontName
-        SaveSetting PROFILE_APP, section, "DimensionFontSize", CStr(.FontSizePt)
-        SaveSetting PROFILE_APP, section, "DimensionOffset", CStr(.LineOffsetMM)
+        SaveSetting PROFILE_APP, section, "DimensionMode", CStr(.mode)
+        SaveSetting PROFILE_APP, section, "DimensionUnit", .unitText
+        SaveSetting PROFILE_APP, section, "DimensionDecimals", CStr(.decimals)
+        SaveSetting PROFILE_APP, section, "DimensionFont", .fontName
+        SaveSetting PROFILE_APP, section, "DimensionFontSize", CStr(.fontSizePt)
+        SaveSetting PROFILE_APP, section, "DimensionOffset", CStr(.lineOffsetMM)
         SaveSetting PROFILE_APP, section, "DimensionIncludeFit", CPT_BoolText(.IncludeInPageFit)
         SaveSetting PROFILE_APP, section, "DimensionRemoveOld", CPT_BoolText(.RemoveOldDimensions)
     End With
@@ -2807,38 +2926,38 @@ Private Function CPT_LoadWorkflowProfile(ByVal profileName As String, ByRef prof
     With profile.ExportOptions
         .Scope = CLng(GetSetting(PROFILE_APP, section, "Scope", CStr(.Scope)))
         .NameMode = CLng(GetSetting(PROFILE_APP, section, "NameMode", CStr(.NameMode)))
-        .CustomName = GetSetting(PROFILE_APP, section, "CustomName", "")
-        .OutputFolder = GetSetting(PROFILE_APP, section, "OutputFolder", "")
-        .ExportCurrentCDR = CPT_SettingBool(section, "ExportCurrentCDR", .ExportCurrentCDR)
-        .ExportV15CDR = CPT_SettingBool(section, "ExportV15CDR", .ExportV15CDR)
-        .ExportCurvesCurrentCDR = CPT_SettingBool(section, "ExportCurvesCurrentCDR", .ExportCurvesCurrentCDR)
-        .ExportCurvesV15CDR = CPT_SettingBool(section, "ExportCurvesV15CDR", .ExportCurvesV15CDR)
-        .ExportCurvesPDF = CPT_SettingBool(section, "ExportCurvesPDF", .ExportCurvesPDF)
+        .customName = GetSetting(PROFILE_APP, section, "CustomName", "")
+        .outputFolder = GetSetting(PROFILE_APP, section, "OutputFolder", "")
+        .exportCurrentCDR = CPT_SettingBool(section, "ExportCurrentCDR", .exportCurrentCDR)
+        .exportV15CDR = CPT_SettingBool(section, "ExportV15CDR", .exportV15CDR)
+        .exportCurvesCurrentCDR = CPT_SettingBool(section, "ExportCurvesCurrentCDR", .exportCurvesCurrentCDR)
+        .exportCurvesV15CDR = CPT_SettingBool(section, "ExportCurvesV15CDR", .exportCurvesV15CDR)
+        .exportCurvesPDF = CPT_SettingBool(section, "ExportCurvesPDF", .exportCurvesPDF)
         .FitPageToArtwork = CPT_SettingBool(section, "FitPageToArtwork", .FitPageToArtwork)
-        .IncludeOutlines = CPT_SettingBool(section, "IncludeOutlines", .IncludeOutlines)
-        .MarginMM = CDbl(GetSetting(PROFILE_APP, section, "MarginMM", CStr(.MarginMM)))
+        .includeOutlines = CPT_SettingBool(section, "IncludeOutlines", .includeOutlines)
+        .marginMM = CDbl(GetSetting(PROFILE_APP, section, "MarginMM", CStr(.marginMM)))
         .CDRPageMode = CLng(GetSetting(PROFILE_APP, section, "CDRPageMode", IIf(.FitPageToArtwork, CStr(cptCDRFitCustomMargin), CStr(cptCDRKeepOriginalPage))))
-        .CDRCustomWidthMM = CDbl(GetSetting(PROFILE_APP, section, "CDRCustomWidthMM", CStr(.CDRCustomWidthMM)))
-        .CDRCustomHeightMM = CDbl(GetSetting(PROFILE_APP, section, "CDRCustomHeightMM", CStr(.CDRCustomHeightMM)))
+        .cdrCustomWidthMM = CDbl(GetSetting(PROFILE_APP, section, "CDRCustomWidthMM", CStr(.cdrCustomWidthMM)))
+        .cdrCustomHeightMM = CDbl(GetSetting(PROFILE_APP, section, "CDRCustomHeightMM", CStr(.cdrCustomHeightMM)))
         .PDFPageMode = CLng(GetSetting(PROFILE_APP, section, "PDFPageMode", CStr(.PDFPageMode)))
-        .PDFMarginMM = CDbl(GetSetting(PROFILE_APP, section, "PDFMarginMM", CStr(.PDFMarginMM)))
-        .PDFCustomWidthMM = CDbl(GetSetting(PROFILE_APP, section, "PDFCustomWidthMM", CStr(.PDFCustomWidthMM)))
-        .PDFCustomHeightMM = CDbl(GetSetting(PROFILE_APP, section, "PDFCustomHeightMM", CStr(.PDFCustomHeightMM)))
-        .RenameSourcePages = CPT_SettingBool(section, "RenameSourcePages", .RenameSourcePages)
-        .AutoScaleLargePDF = CPT_SettingBool(section, "AutoScaleLargePDF", .AutoScaleLargePDF)
-        .EnsureUniqueNames = CPT_SettingBool(section, "EnsureUniqueNames", .EnsureUniqueNames)
+        .pdfMarginMM = CDbl(GetSetting(PROFILE_APP, section, "PDFMarginMM", CStr(.pdfMarginMM)))
+        .pdfCustomWidthMM = CDbl(GetSetting(PROFILE_APP, section, "PDFCustomWidthMM", CStr(.pdfCustomWidthMM)))
+        .pdfCustomHeightMM = CDbl(GetSetting(PROFILE_APP, section, "PDFCustomHeightMM", CStr(.pdfCustomHeightMM)))
+        .renameSourcePages = CPT_SettingBool(section, "RenameSourcePages", .renameSourcePages)
+        .autoScaleLargePDF = CPT_SettingBool(section, "AutoScaleLargePDF", .autoScaleLargePDF)
+        .ensureUniqueNames = CPT_SettingBool(section, "EnsureUniqueNames", .ensureUniqueNames)
     End With
 
     With profile.DimensionOptions
         .Enabled = CPT_SettingBool(section, "DimensionEnabled", .Enabled)
-        .TargetMode = CLng(GetSetting(PROFILE_APP, section, "DimensionTarget", CStr(.TargetMode)))
+        .targetMode = CLng(GetSetting(PROFILE_APP, section, "DimensionTarget", CStr(.targetMode)))
         .Axes = CLng(GetSetting(PROFILE_APP, section, "DimensionAxes", CStr(.Axes)))
-        .Mode = CLng(GetSetting(PROFILE_APP, section, "DimensionMode", CStr(.Mode)))
-        .UnitText = GetSetting(PROFILE_APP, section, "DimensionUnit", .UnitText)
-        .Decimals = CLng(GetSetting(PROFILE_APP, section, "DimensionDecimals", CStr(.Decimals)))
-        .FontName = GetSetting(PROFILE_APP, section, "DimensionFont", .FontName)
-        .FontSizePt = CDbl(GetSetting(PROFILE_APP, section, "DimensionFontSize", CStr(.FontSizePt)))
-        .LineOffsetMM = CDbl(GetSetting(PROFILE_APP, section, "DimensionOffset", CStr(.LineOffsetMM)))
+        .mode = CLng(GetSetting(PROFILE_APP, section, "DimensionMode", CStr(.mode)))
+        .unitText = GetSetting(PROFILE_APP, section, "DimensionUnit", .unitText)
+        .decimals = CLng(GetSetting(PROFILE_APP, section, "DimensionDecimals", CStr(.decimals)))
+        .fontName = GetSetting(PROFILE_APP, section, "DimensionFont", .fontName)
+        .fontSizePt = CDbl(GetSetting(PROFILE_APP, section, "DimensionFontSize", CStr(.fontSizePt)))
+        .lineOffsetMM = CDbl(GetSetting(PROFILE_APP, section, "DimensionOffset", CStr(.lineOffsetMM)))
         .IncludeInPageFit = CPT_SettingBool(section, "DimensionIncludeFit", .IncludeInPageFit)
         .RemoveOldDimensions = CPT_SettingBool(section, "DimensionRemoveOld", .RemoveOldDimensions)
     End With
@@ -2966,11 +3085,11 @@ Private Function CPT_ProfileSummary(ByRef profile As CPTWorkflowProfile) As Stri
     Dim dimensionText As String
 
     With profile.ExportOptions
-        If .ExportCurrentCDR Then formats = formats & "Current CDR, "
-        If .ExportV15CDR Then formats = formats & "V15 CDR, "
-        If .ExportCurvesCurrentCDR Then formats = formats & "Curved CDR, "
-        If .ExportCurvesV15CDR Then formats = formats & "Curved V15 CDR, "
-        If .ExportCurvesPDF Then formats = formats & "Curved PDF, "
+        If .exportCurrentCDR Then formats = formats & "Current CDR, "
+        If .exportV15CDR Then formats = formats & "V15 CDR, "
+        If .exportCurvesCurrentCDR Then formats = formats & "Curved CDR, "
+        If .exportCurvesV15CDR Then formats = formats & "Curved V15 CDR, "
+        If .exportCurvesPDF Then formats = formats & "Curved PDF, "
         If Len(formats) >= 2 Then formats = Left$(formats, Len(formats) - 2)
 
         Select Case .Scope
@@ -2979,7 +3098,7 @@ Private Function CPT_ProfileSummary(ByRef profile As CPTWorkflowProfile) As Stri
             Case cptScopeCurrentPage: scopeText = "Current page only"
         End Select
 
-        cdrPageText = CPT_CDRPageModeText(.CDRPageMode, .MarginMM, .CDRCustomWidthMM, .CDRCustomHeightMM)
+        cdrPageText = CPT_CDRPageModeText(.CDRPageMode, .marginMM, .cdrCustomWidthMM, .cdrCustomHeightMM)
     End With
 
     If profile.DimensionOptions.Enabled Then
@@ -2994,8 +3113,8 @@ Private Function CPT_ProfileSummary(ByRef profile As CPTWorkflowProfile) As Stri
         "Scope: " & scopeText & vbCrLf & _
         "Formats: " & formats & vbCrLf & _
         "CDR pages: " & cdrPageText & vbCrLf & _
-        "PDF pages: " & CPT_PDFPageModeText(profile.ExportOptions.PDFPageMode, profile.ExportOptions.PDFMarginMM, profile.ExportOptions.PDFCustomWidthMM, profile.ExportOptions.PDFCustomHeightMM) & vbCrLf & _
-        "Output: " & profile.ExportOptions.OutputFolder
+        "PDF pages: " & CPT_PDFPageModeText(profile.ExportOptions.PDFPageMode, profile.ExportOptions.pdfMarginMM, profile.ExportOptions.pdfCustomWidthMM, profile.ExportOptions.pdfCustomHeightMM) & vbCrLf & _
+        "Output: " & profile.ExportOptions.outputFolder
 End Function
 
 Private Function CPT_DimensionOptionsSummary(ByRef dimOpt As CPTDimensionOptions) As String
@@ -3003,19 +3122,19 @@ Private Function CPT_DimensionOptionsSummary(ByRef dimOpt As CPTDimensionOptions
     Dim axesText As String
     Dim modeText As String
 
-    If dimOpt.TargetMode = cptDimensionEachObject Then targetText = "each selected object" Else targetText = "complete selection"
+    If dimOpt.targetMode = cptDimensionEachObject Then targetText = "each selected object" Else targetText = "complete selection"
     Select Case dimOpt.Axes
         Case cptDimensionWidthOnly: axesText = "width"
         Case cptDimensionHeightOnly: axesText = "height"
         Case Else: axesText = "width + height"
     End Select
-    Select Case dimOpt.Mode
+    Select Case dimOpt.mode
         Case cptDimensionPermanentSource: modeText = "permanent in source"
         Case cptDimensionTemporarySource: modeText = "temporary in source"
         Case Else: modeText = "export copies only"
     End Select
 
-    CPT_DimensionOptionsSummary = axesText & " for " & targetText & ", " & dimOpt.UnitText & ", " & modeText
+    CPT_DimensionOptionsSummary = axesText & " for " & targetText & ", " & dimOpt.unitText & ", " & modeText
 End Function
 
 Private Function CPT_CDRPageModeText( _
@@ -3107,36 +3226,36 @@ End Sub
 Private Sub CPT_SetDefaultOptions(ByRef opt As CPTExportOptions)
     opt.Scope = cptScopeEachPage
     opt.NameMode = cptNameExportField
-    opt.CustomName = ""
-    opt.OutputFolder = ""
+    opt.customName = ""
+    opt.outputFolder = ""
 
-    opt.ExportCurrentCDR = False
-    opt.ExportV15CDR = False
-    opt.ExportCurvesCurrentCDR = False
-    opt.ExportCurvesV15CDR = False
-    opt.ExportCurvesPDF = False
+    opt.exportCurrentCDR = False
+    opt.exportV15CDR = False
+    opt.exportCurvesCurrentCDR = False
+    opt.exportCurvesV15CDR = False
+    opt.exportCurvesPDF = False
 
     opt.FitPageToArtwork = False
-    opt.IncludeOutlines = True
-    opt.MarginMM = DEFAULT_MARGIN_MM
+    opt.includeOutlines = True
+    opt.marginMM = DEFAULT_MARGIN_MM
     opt.CDRPageMode = cptCDRKeepOriginalPage
-    opt.CDRCustomWidthMM = 210#
-    opt.CDRCustomHeightMM = 297#
+    opt.cdrCustomWidthMM = 210#
+    opt.cdrCustomHeightMM = 297#
     opt.PDFPageMode = cptPDFKeepOriginalPage
-    opt.PDFMarginMM = DEFAULT_MARGIN_MM
-    opt.PDFCustomWidthMM = 210#
-    opt.PDFCustomHeightMM = 297#
-    opt.RenameSourcePages = False
-    opt.AutoScaleLargePDF = True
-    opt.EnsureUniqueNames = True
+    opt.pdfMarginMM = DEFAULT_MARGIN_MM
+    opt.pdfCustomWidthMM = 210#
+    opt.pdfCustomHeightMM = 297#
+    opt.renameSourcePages = False
+    opt.autoScaleLargePDF = True
+    opt.ensureUniqueNames = True
 End Sub
 
 Private Function CPT_AnyFormatSelected(ByRef opt As CPTExportOptions) As Boolean
-    CPT_AnyFormatSelected = opt.ExportCurrentCDR Or _
-                            opt.ExportV15CDR Or _
-                            opt.ExportCurvesCurrentCDR Or _
-                            opt.ExportCurvesV15CDR Or _
-                            opt.ExportCurvesPDF
+    CPT_AnyFormatSelected = opt.exportCurrentCDR Or _
+                            opt.exportV15CDR Or _
+                            opt.exportCurvesCurrentCDR Or _
+                            opt.exportCurvesV15CDR Or _
+                            opt.exportCurvesPDF
 End Function
 
 Private Function CPT_HasActiveDocument() As Boolean
@@ -3176,7 +3295,7 @@ Private Function CPT_GetFolderFromUser(ByVal title As String) As String
     If folderObject Is Nothing Then
         CPT_GetFolderFromUser = ""
     Else
-        CPT_GetFolderFromUser = CPT_NormalizeFolder(folderObject.Self.Path)
+        CPT_GetFolderFromUser = CPT_NormalizeFolder(folderObject.Self.path)
     End If
     Exit Function
 
