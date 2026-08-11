@@ -30,7 +30,6 @@ VFE-Corel-Production-Tools-27/
 │   ├── VFE_CorelProductionTools27.bas
 │   └── VFE_UI_Installer.bas
 ├── docs/
-├── checksums/
 ├── .github/
 ├── INSTALLATION.md
 ├── BUILD_FROM_SOURCE.md
