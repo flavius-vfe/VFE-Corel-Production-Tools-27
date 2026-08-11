@@ -85,7 +85,6 @@ The prebuilt GMS may have been created from an earlier installer revision. To gu
 - [Troubleshooting](TROUBLESHOOTING.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Release checklist](docs/RELEASE_CHECKLIST.md)
-- [GitHub publishing](docs/GITHUB_PUBLISHING.md)
 - [Official Corel references](docs/OFFICIAL_COREL_REFERENCES.md)
 
 ## Licence
